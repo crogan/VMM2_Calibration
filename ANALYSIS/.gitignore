@@ -1,0 +1,14 @@
+dat2root
+Calibrate_xADC
+*.DS_Store
+*~
+*.pyc
+*#
+*.d
+.#*
+*.so
+*.dSYM
+*.dat
+*_.cxx
+*.o
+
