@@ -1,8 +1,17 @@
 #ifndef SETSTYLE_h
 #define SETSTYLE_h
 
+#include <vector>
+#include <string>
+
 #include <TStyle.h>
 #include <TColor.h>
+#include <TH1D.h>
+#include <TLegend.h>
+#include <TCanvas.h>
+#include <TLatex.h>
+
+using namespace std;
 
 void setstyle(){
 
@@ -117,5 +126,115 @@ const TColor lime1(7071,0.882,0.961,0.612);
 const TColor lime2(7072,0.706,0.8,0.38);
 const TColor lime3(7073,0.455,0.557,0.098);
 const TColor lime4(7074,0.204,0.263,0);
+
+// TCanvas* Plot_Me(string scan, TH2D* histo, string X, string Y, string title, string label){
+//   TCanvas *c1 = new TCanvas(scan.c_str(),scan.c_str(),600,500);
+//   c1->SetLeftMargin(0.15);
+//   c1->SetRightMargin(0.22);
+//   c1->SetBottomMargin(0.15);
+//   c1->SetTopMargin(0.08);
+//   c1->Draw();
+//   c1->SetGridx();
+//   c1->SetGridy();
+//   c1->SetLogz();
+  
+//   histo->Draw("COLZ");
+//   histo->GetXaxis()->SetTitle(X.c_str());
+//   histo->GetXaxis()->SetTitleOffset(1.08);
+//   histo->GetXaxis()->CenterTitle();
+//   histo->GetYaxis()->SetTitle(Y.c_str());
+//   histo->GetYaxis()->SetTitleOffset(1.11);
+//   histo->GetYaxis()->CenterTitle();
+//   histo->GetZaxis()->SetTitle("N_{event}");
+//   histo->GetZaxis()->SetTitleOffset(1.5);
+//   histo->GetZaxis()->CenterTitle();
+//   histo->GetZaxis()->SetRangeUser(0.9*histo->GetMinimum(),1.1*histo->GetMaximum());
+//   histo->Draw("COLZ");
+  
+//   TLatex l;
+//   l.SetTextFont(132);	
+//   l.SetNDC();	
+//   l.SetTextSize(0.045);
+//   l.SetTextFont(132);
+//   l.DrawLatex(0.4,0.955,title.c_str());
+//   l.SetTextSize(0.04);
+//   l.SetTextFont(42);
+//   l.DrawLatex(0.15,0.955,"#bf{#it{ATLAS}} Internal");
+//   l.SetTextSize(0.045);
+//   l.SetTextFont(132);
+//   l.DrawLatex(0.75,0.06,label.c_str());
+	
+//   return c1;
+// }
+
+TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y, string title = "", const vector<string>& label = vector<string>()){
+  TCanvas *c1 = new TCanvas(can.c_str(),can.c_str(),700,500);
+  c1->SetRightMargin(0.05);
+  c1->Draw();
+  c1->SetGridx();
+  c1->SetGridy();
+
+  int Nh = histo.size();
+  int imax = 0;
+  int imin = 0;
+  double max = 0;
+  double min = -1;
+  for(int i = 0; i < Nh; i++){
+    if(histo[i]->GetMaximum() > max){
+      imax = i;
+      max = histo[i]->GetMaximum();
+    }
+    if(histo[i]->GetMinimum(0.) < min || min < 0){
+      imin = i;
+      min = histo[i]->GetMinimum(0.);
+    }
+  }
+
+  histo[imax]->Draw();
+  histo[imax]->GetXaxis()->SetTitle(X.c_str());
+  histo[imax]->GetXaxis()->SetTitleOffset(1.08);
+  histo[imax]->GetXaxis()->CenterTitle();
+  histo[imax]->GetYaxis()->SetTitle(Y.c_str());
+  histo[imax]->GetYaxis()->SetTitleOffset(1.13);
+  histo[imax]->GetYaxis()->CenterTitle();
+  histo[imax]->GetYaxis()->SetRangeUser(0.9*min,1.1*max);
+
+  for(int i = 0; i < Nh; i++){
+    histo[i]->SetLineColor(7003 + (i%8)*10);
+    histo[i]->SetLineWidth(3);
+    histo[i]->SetMarkerColor(7003 + (i%8)*10);
+    histo[i]->SetMarkerSize(0);
+    histo[i]->SetFillColor(7000 + (i%8)*10);
+    histo[i]->SetFillStyle(3002);
+    histo[i]->Draw("SAME");
+  }
+
+  TLegend* leg = new TLegend(0.688,0.22,0.93,0.42);
+  if(label.size() == histo.size()){
+    leg->SetTextFont(132);
+    leg->SetTextSize(0.045);
+    leg->SetFillColor(kWhite);
+    leg->SetLineColor(kWhite);
+    leg->SetShadowColor(kWhite);
+    for(int i = 0; i < Nh; i++)
+      leg->AddEntry(histo[i],label[i].c_str());
+    leg->SetLineColor(kWhite);
+    leg->SetFillColor(kWhite);
+    leg->SetShadowColor(kWhite);
+    leg->Draw("SAME");
+  }
+
+  TLatex l;
+  l.SetTextFont(132);	
+  l.SetNDC();	
+  l.SetTextSize(0.05);
+  l.SetTextFont(132);
+  l.DrawLatex(0.5,0.94,title.c_str());
+  l.SetTextSize(0.045);
+  l.SetTextFont(42);
+  l.DrawLatex(0.02,0.94,"#bf{#it{ATLAS}} Internal - MMFE8+VMM2");
+
+  return c1;
+}
 
 #endif
