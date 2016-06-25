@@ -10,6 +10,7 @@
 #include <TLegend.h>
 #include <TCanvas.h>
 #include <TLatex.h>
+#include <TList.h>
 
 using namespace std;
 
@@ -167,6 +168,47 @@ const TColor lime4(7074,0.204,0.263,0);
 //   return c1;
 // }
 
+TCanvas* Plot_1D(string can, TH1D* hist, string X, string Y, string title = ""){
+  TCanvas *c1 = new TCanvas(can.c_str(),can.c_str(),700,500);
+  c1->SetRightMargin(0.05);
+  c1->Draw();
+  c1->SetGridx();
+  c1->SetGridy();
+
+  hist->Draw();
+  hist->GetXaxis()->SetTitle(X.c_str());
+  hist->GetXaxis()->SetTitleOffset(1.08);
+  hist->GetXaxis()->CenterTitle();
+  hist->GetYaxis()->SetTitle(Y.c_str());
+  hist->GetYaxis()->SetTitleOffset(1.13);
+  hist->GetYaxis()->CenterTitle();
+
+  hist->SetLineColor(7003);
+  hist->SetLineWidth(3);
+  hist->SetMarkerColor(7003);
+  hist->SetMarkerSize(0);
+  hist->SetFillColor(7000);
+  hist->SetFillStyle(3002);
+
+  TLatex l;
+  l.SetTextFont(132);	
+  l.SetNDC();	
+  l.SetTextSize(0.05);
+  l.SetTextFont(132);
+  l.DrawLatex(0.5,0.94,title.c_str());
+  l.SetTextSize(0.045);
+  l.SetTextFont(42);
+  l.DrawLatex(0.02,0.94,"#bf{#it{ATLAS}} Internal - MMFE8+VMM2");
+
+  TF1* func = (TF1*) hist->GetListOfFunctions()->First();
+  if(func){
+    func->SetLineColor(7012);
+    func->SetLineWidth(3);
+  }
+
+  return c1;
+}
+
 TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y, string title = "", const vector<string>& label = vector<string>()){
   TCanvas *c1 = new TCanvas(can.c_str(),can.c_str(),700,500);
   c1->SetRightMargin(0.05);
@@ -207,6 +249,11 @@ TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y, string ti
     histo[i]->SetFillColor(7000 + (i%8)*10);
     histo[i]->SetFillStyle(3002);
     histo[i]->Draw("SAME");
+    TF1* func = (TF1*) histo[i]->GetListOfFunctions()->First();
+    if(func){
+      func->SetLineColor(7002 + ((i+1)%8)*10);
+      func->SetLineWidth(3);
+    }
   }
 
   TLegend* leg = new TLegend(0.688,0.22,0.93,0.42);

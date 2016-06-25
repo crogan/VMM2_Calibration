@@ -14,7 +14,6 @@ const string Y_label = "Count";
 void Plot_xADC(const string& filename, int VMM = 1){
   setstyle();
   
- 
   TChain* tree = new TChain("xADC_data");
   tree->AddFile(filename.c_str());
   
