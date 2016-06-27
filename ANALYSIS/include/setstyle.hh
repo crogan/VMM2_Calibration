@@ -7,10 +7,12 @@
 #include <TStyle.h>
 #include <TColor.h>
 #include <TH1D.h>
+#include <TH2D.h>
 #include <TLegend.h>
 #include <TCanvas.h>
 #include <TLatex.h>
 #include <TList.h>
+#include <TF1.h>
 
 using namespace std;
 
@@ -128,45 +130,42 @@ const TColor lime2(7072,0.706,0.8,0.38);
 const TColor lime3(7073,0.455,0.557,0.098);
 const TColor lime4(7074,0.204,0.263,0);
 
-// TCanvas* Plot_Me(string scan, TH2D* histo, string X, string Y, string title, string label){
-//   TCanvas *c1 = new TCanvas(scan.c_str(),scan.c_str(),600,500);
-//   c1->SetLeftMargin(0.15);
-//   c1->SetRightMargin(0.22);
-//   c1->SetBottomMargin(0.15);
-//   c1->SetTopMargin(0.08);
-//   c1->Draw();
-//   c1->SetGridx();
-//   c1->SetGridy();
-//   c1->SetLogz();
+TCanvas* Plot_2D(string scan, TH2D* histo, string X, string Y, string Z, string title){
+  TCanvas *c1 = new TCanvas(scan.c_str(),scan.c_str(),600,500);
+  c1->SetLeftMargin(0.15);
+  c1->SetRightMargin(0.22);
+  c1->SetBottomMargin(0.15);
+  c1->SetTopMargin(0.08);
+  c1->Draw();
+  c1->SetGridx();
+  c1->SetGridy();
+  c1->SetLogz();
   
-//   histo->Draw("COLZ");
-//   histo->GetXaxis()->SetTitle(X.c_str());
-//   histo->GetXaxis()->SetTitleOffset(1.08);
-//   histo->GetXaxis()->CenterTitle();
-//   histo->GetYaxis()->SetTitle(Y.c_str());
-//   histo->GetYaxis()->SetTitleOffset(1.11);
-//   histo->GetYaxis()->CenterTitle();
-//   histo->GetZaxis()->SetTitle("N_{event}");
-//   histo->GetZaxis()->SetTitleOffset(1.5);
-//   histo->GetZaxis()->CenterTitle();
-//   histo->GetZaxis()->SetRangeUser(0.9*histo->GetMinimum(),1.1*histo->GetMaximum());
-//   histo->Draw("COLZ");
+  histo->Draw("COLZ");
+  histo->GetXaxis()->SetTitle(X.c_str());
+  histo->GetXaxis()->SetTitleOffset(1.08);
+  histo->GetXaxis()->CenterTitle();
+  histo->GetYaxis()->SetTitle(Y.c_str());
+  histo->GetYaxis()->SetTitleOffset(1.11);
+  histo->GetYaxis()->CenterTitle();
+  histo->GetZaxis()->SetTitle(Z.c_str());
+  histo->GetZaxis()->SetTitleOffset(1.5);
+  histo->GetZaxis()->CenterTitle();
+  histo->GetZaxis()->SetRangeUser(0.9*histo->GetMinimum(),1.1*histo->GetMaximum());
+  histo->Draw("COLZ");
   
-//   TLatex l;
-//   l.SetTextFont(132);	
-//   l.SetNDC();	
-//   l.SetTextSize(0.045);
-//   l.SetTextFont(132);
-//   l.DrawLatex(0.4,0.955,title.c_str());
-//   l.SetTextSize(0.04);
-//   l.SetTextFont(42);
-//   l.DrawLatex(0.15,0.955,"#bf{#it{ATLAS}} Internal");
-//   l.SetTextSize(0.045);
-//   l.SetTextFont(132);
-//   l.DrawLatex(0.75,0.06,label.c_str());
+  TLatex l;
+  l.SetTextFont(132);	
+  l.SetNDC();	
+  l.SetTextSize(0.05);
+  l.SetTextFont(132);
+  l.DrawLatex(0.5,0.94,title.c_str());
+  l.SetTextSize(0.045);
+  l.SetTextFont(42);
+  l.DrawLatex(0.02,0.94,"#bf{#it{ATLAS}} Internal - MMFE8+VMM2");
 	
-//   return c1;
-// }
+  return c1;
+}
 
 TCanvas* Plot_1D(string can, TH1D* hist, string X, string Y, string title = ""){
   TCanvas *c1 = new TCanvas(can.c_str(),can.c_str(),700,500);
@@ -209,7 +208,8 @@ TCanvas* Plot_1D(string can, TH1D* hist, string X, string Y, string title = ""){
   return c1;
 }
 
-TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y, string title = "", const vector<string>& label = vector<string>()){
+TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y, 
+		 string title = "", const vector<string>& label = vector<string>()){
   TCanvas *c1 = new TCanvas(can.c_str(),can.c_str(),700,500);
   c1->SetRightMargin(0.05);
   c1->Draw();
