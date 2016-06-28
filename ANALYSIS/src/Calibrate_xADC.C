@@ -2,7 +2,7 @@
 
 #include "include/setstyle.hh"
 #include "include/fit_functions.hh"
-#include "../include/xADCfitBase.hh"
+#include "include/xADCfitBase.hh"
 
 using namespace std;
 
@@ -65,8 +65,7 @@ int main(int argc, char* argv[]){
   for(int i = 0; i < N; i++){
     base->GetEntry(i);
 
-    MMFE8 = 0; // replace this with MMFE8 number from tree when available
-    //MMFE8 = base->MMFE8;
+    MMFE8 = base->MMFE8;
     VMM   = base->VMM;
 
     // add a new MMFE8+VMM combination 

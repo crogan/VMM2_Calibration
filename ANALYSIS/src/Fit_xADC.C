@@ -72,8 +72,7 @@ int main(int argc, char* argv[]){
     if(!base->CKTPrunning)
       continue;
 
-    MMFE8 = 0; // replace this with MMFE8 number from tree when available
-    //MMFE8 = base->MMFE8;
+    MMFE8 = base->MMFE8;
     VMM   = base->VMM;
     DAC   = base->PDAC;
     
@@ -207,6 +206,7 @@ int main(int argc, char* argv[]){
 	if(Nhist <= 0.) continue;
 	
 	double h_mean = vhist[index][d]->GetMean();
+	double h_rms  = vhist[index][d]->GetRMS();
 	
 	char fname[50];
 	sprintf(fname, "func_MMFE8-%d_VMM-%d_DAC-%d", 
@@ -222,14 +222,14 @@ int main(int argc, char* argv[]){
 	vfunc[ifunc]->SetParameter(3, Nhist/2.);
 	
 	double mu, mu0;
-	double bmax = -1.;
+	double bmax0 = -1.;
 	for(int b = 0; b < int(h_mean); b++){
-	  if(vhist[index][d]->GetBinContent(b+1) > bmax){
+	  if(vhist[index][d]->GetBinContent(b+1) > bmax0){
 	    mu0 = b;
-	    bmax = vhist[index][d]->GetBinContent(b+1);
+	    bmax0 = vhist[index][d]->GetBinContent(b+1);
 	  }
 	}
-	bmax = -1.;
+	double bmax = -1.;
 	for(int b = int(h_mean); b < 2000.; b++){
 	  if(vhist[index][d]->GetBinContent(b+1) > bmax){
 	    mu = b;
@@ -237,6 +237,16 @@ int main(int argc, char* argv[]){
 	  }
 	}
 	
+	double max_delta = 10000.;
+	if(fabs(bmax-bmax0)/(bmax+bmax0) > 0.5){
+	  mu = mu0+1.;
+	  max_delta = 400.;
+	}
+
+	if(vDAC[index][d] == 40 && vVMM[index] == 0){
+	  cout << mu << " " << mu0 << " " << h_rms << endl;
+	}
+
 	vfunc[ifunc]->SetParName(1, "#mu-#mu_{0}");
 	vfunc[ifunc]->SetParameter(1, fabs(mu-mu0)); 
 	vfunc[ifunc]->SetParName(4, "#mu_{0}");
@@ -247,17 +257,17 @@ int main(int argc, char* argv[]){
 	vfunc[ifunc]->SetParName(5, "#sigma_{0}");
 	vfunc[ifunc]->SetParameter(5, 2.);
 	
-	vfunc[ifunc]->SetParLimits(1, 0., 10000.);
+	vfunc[ifunc]->SetParLimits(1, 0., max_delta);
 	vfunc[ifunc]->SetParLimits(4, 0., h_mean);
 	
 	vhist[index][d]->Fit(fname, "EIQ");
 	  
-	if(vfunc[ifunc]->GetChisquare() > 50.){
+	if(vfunc[ifunc]->GetChisquare() > 50. && false){
 	  cout << "Chi2 > 50:";
 	  cout << " MMFE8 = " << vMMFE8[index];
 	  cout << " VMM = " << vVMM[index];
 	  cout << " DAC = " << vDAC[index][d] << endl;
-	  cout << " Chi2 = " << vfunc[ifunc]->GetChisquare();
+	  cout << " Chi2 = " << vfunc[ifunc]->GetChisquare() << endl;
 	}
 
 	fit_MMFE8 = vMMFE8[index];
