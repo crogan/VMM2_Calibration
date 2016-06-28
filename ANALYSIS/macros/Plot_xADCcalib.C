@@ -7,6 +7,7 @@ using namespace std;
 
 const string X_label = "Test Pulse DAC";
 const string Y_label = "Input Charge (fC)";
+const string Yerr_label = "#sigma Charge (fC)";
 
 const int max_N = 20;
 
@@ -25,6 +26,8 @@ void Plot_xADCcalib(const string& filename, int VMM = 1){
   vector<double> vmeanQerr;
   vector<double> vDAC;
 
+  int MMFE8 = 0;
+
   for (int i = 0; i < N; i++){
     base->GetEntry(i);
 
@@ -41,33 +44,38 @@ void Plot_xADCcalib(const string& filename, int VMM = 1){
   double meanQ[Npoint];
   double meanQerr[Npoint];
 
+  double min = 1000.;
   for(int i = 0; i < Npoint; i++){
     DAC[i] = vDAC[i];
     meanQ[i] = vmeanQ[i];
     meanQerr[i] = vmeanQerr[i];
+    if(meanQ[i] < min)
+      min = meanQ[i];
   }
 
   TGraphErrors* gr = new TGraphErrors(Npoint, DAC, meanQ, 0, meanQerr);
 
-  TCanvas* can = new TCanvas("can","can",1200,1000);
-  can->SetTopMargin(0.1);
-  can->SetLeftMargin(0.12);
-  can->Draw();
-  can->SetGridx();
-  can->SetGridy();
-  can->cd();
+  TF1* func = new TF1("func", P0_P2_P1, 0., 400., 4);
 
-  gr->Draw("ap");
-  gr->GetXaxis()->SetTitle(X_label.c_str());
-  gr->GetXaxis()->CenterTitle();
-  gr->GetXaxis()->SetTitleOffset(1.1);
-  gr->GetYaxis()->SetTitle(Y_label.c_str());
-  gr->GetYaxis()->SetTitleOffset(1.4);
-  gr->GetYaxis()->CenterTitle();
-  // gr->GetXaxis()->SetRangeUser(0., 220.);
-  // gr->GetYaxis()->SetRangeUser(0.,120.);
-  gr->SetMarkerStyle(4);
-  gr->SetMarkerColor(kAzure + 10);
-  gr->SetMarkerSize(3);
+  func->SetParName(0, "c_{0}");
+  func->SetParameter(0, min);
+  func->SetParName(1, "A_{2}");
+  func->SetParameter(1, 0.005);
+  func->SetParName(2, "t_{0 , 2}");
+  func->SetParameter(2, 40.);
+  func->SetParName(3, "d_{2 , 1}");
+  func->SetParameter(3, 80.);
+
+  func->SetParLimits(3, 0., 10000.);
+
+  gr->Fit("func", "E");
+
+  char stitle[50];
+  sprintf(stitle, "Board #%d , VMM #%d", MMFE8, VMM);
+  TCanvas* c1 = Plot_Graph("c1", gr, X_label, Y_label, stitle);
+
+  TGraph* gr2 = new TGraph(Npoint, DAC, meanQerr);
+
+  TCanvas* c2 = Plot_Graph("c2", gr2, X_label, Yerr_label, stitle);
  
 }
