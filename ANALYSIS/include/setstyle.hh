@@ -8,6 +8,7 @@
 #include <TColor.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TGraphErrors.h>
 #include <TLegend.h>
 #include <TCanvas.h>
 #include <TLatex.h>
@@ -203,6 +204,11 @@ TCanvas* Plot_1D(string can, TH1D* hist, string X, string Y, string title = ""){
   if(func){
     func->SetLineColor(7012);
     func->SetLineWidth(3);
+    func->SetNpx(50000);
+    TH1F* hfunc = (TH1F*)func->GetHistogram();
+    hfunc->SetLineColor(7012);
+    hfunc->SetLineWidth(3);
+    hfunc->Draw("SAME");
   }
 
   return c1;
@@ -251,8 +257,13 @@ TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y,
     histo[i]->Draw("SAME");
     TF1* func = (TF1*) histo[i]->GetListOfFunctions()->First();
     if(func){
-      func->SetLineColor(7002 + ((i+1)%8)*10);
-      func->SetLineWidth(3);
+      func->SetLineColorAlpha(kWhite, 0);
+      func->SetLineWidth(0);
+      func->SetNpx(50000);
+      TH1F* hfunc = (TH1F*)func->GetHistogram();
+      hfunc->SetLineColor(7002 + ((i+1)%8)*10);
+      hfunc->SetLineWidth(3);
+      hfunc->Draw("SAME");
     }
   }
 

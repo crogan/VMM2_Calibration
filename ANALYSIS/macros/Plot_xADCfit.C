@@ -53,6 +53,7 @@ void Plot_xADCfit(const string& filename, int VMM = 1, int DAC = 200){
   if(b_two_peak){
     func = new TF1("func", DoubleGaus, 
 		   0., 4000., 6);
+    //func->SetLineColorAlpha(kWhite,0);
     
     func->SetParName(0, "N");
     func->SetParameter(0, Nhist/2.);
@@ -60,24 +61,31 @@ void Plot_xADCfit(const string& filename, int VMM = 1, int DAC = 200){
     func->SetParameter(3, N/2.);
 
     double mu, mu0;
-    if(h_mean > h_max){
-      mu  = 2.*h_mean-h_max;
-      mu0 = h_max;
-    } else {
-      mu  = h_max;
-      mu0 = 2.*h_mean-h_max;
+    double bmax = -1.;
+    for(int b = 0; b < int(h_mean); b++){
+      if(hist->GetBinContent(b+1) > bmax){
+	mu0 = b;
+	bmax = hist->GetBinContent(b+1);
+      }
     }
-    func->SetParName(1, "#mu");
-    func->SetParameter(1, mu); 
+    bmax = -1.;
+    for(int b = int(h_mean); b < 2000.; b++){
+      if(hist->GetBinContent(b+1) > bmax){
+	mu = b;
+	bmax = hist->GetBinContent(b+1);
+      }
+    }
+    func->SetParName(1, "#mu-#mu_{0}");
+    func->SetParameter(1, fabs(mu-mu0)); 
     func->SetParName(4, "#mu_{0}");
     func->SetParameter(4, mu0);
-    
+      
     func->SetParName(2, "#sigma");
     func->SetParameter(2, 2.); 
     func->SetParName(5, "#sigma_{0}");
     func->SetParameter(5, 2.);
-    
-    func->SetParLimits(1, h_mean, 4000.);
+      
+    func->SetParLimits(1, 0., 10000.);
     func->SetParLimits(4, 0., h_mean);
   
     hist->Fit("func", "EI");
@@ -98,9 +106,9 @@ void Plot_xADCfit(const string& filename, int VMM = 1, int DAC = 200){
     hist->Fit("func", "EI");
   }
 
-  func->SetLineColor(7000);
-  func->SetMarkerColor(7000);
-  func->SetFillColor(7000);
+  func->SetLineColor(7012);
+  func->SetMarkerColor(7012);
+  func->SetFillColor(7012);
 
   char stitle[50];
   sprintf(stitle, "Board #%d, VMM #%d, DAC = %d", 0, VMM, DAC);

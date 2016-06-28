@@ -13,8 +13,14 @@ double Gaus(double* xs, double* par){
 }
 
 double DoubleGaus(double* xs, double* par){
-  double G0 = Normal(xs[0], par[0], par[1], par[2]);
+  double G0 = Normal(xs[0], par[0], par[4]+par[1], par[2]);
   double G1 = Normal(xs[0], par[3], par[4], par[5]);
+  return G0 + G1;
+}
+
+double DoubleGaus_SameNorm(double* xs, double* par){
+  double G0 = Normal(xs[0], par[0], par[3]+par[1], par[2]);
+  double G1 = Normal(xs[0], par[0], par[3], par[4]);
   return G0 + G1;
 }
 

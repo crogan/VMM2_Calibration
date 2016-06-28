@@ -1,4 +1,5 @@
 dat2root
+Fit_xADC
 Calibrate_xADC
 *.DS_Store
 *~
@@ -11,4 +12,5 @@ Calibrate_xADC
 *.dat
 *_.cxx
 *.o
+*.root
 
