@@ -165,6 +165,13 @@ int main(int argc, char* argv[]){
 
   TFile* fout = new TFile(output_name.c_str(), "RECREATE");
 
+  // write VMM_data tree to outputfile
+  TChain* base_tree = new TChain("VMM_data");
+  base_tree->AddFile(inputFileName);
+  TTree* new_base_tree = base_tree->CloneTree();
+  fout->cd();
+  new_base_tree->Write();
+
   // add plots of PDO v DAC for each
   // MMFE8+VMM combo to output file
   fout->mkdir("PDOfit_plots");
