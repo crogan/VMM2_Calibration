@@ -59,4 +59,13 @@ double P1_P2_P0(double* xs, double* par){
   return c0 + A2*d21*(2.*x - d21 - 2*t02);
 }
 
+double P1(double* xs, double* par){
+  double x = xs[0];
+
+  double c = par[0];
+  double m = par[1];
+  
+  return m*x+c;
+}
+
 #endif
