@@ -7,6 +7,8 @@
 using namespace std;
 
 int main(int argc, char* argv[]){
+  setstyle();
+
   char inputFileName[400];
   char outputFileName[400];
   
@@ -18,9 +20,9 @@ int main(int argc, char* argv[]){
     return 1;
   }
 
+  sscanf(argv[1],"%s", inputFileName);
   bool user_output = false;
   for (int i=0;i<argc;i++){
-    sscanf(argv[1],"%s", inputFileName);
     if (strncmp(argv[i],"-o",2)==0){
       sscanf(argv[i+1],"%s", outputFileName);
       user_output = true;
@@ -102,8 +104,9 @@ int main(int argc, char* argv[]){
       DAC[p] = vDAC[index][p];
       meanQ[p] = vmeanQ[index][p];
       meanQerr[p] = vmeanQerr[index][p];
-      if(meanQerr[p] > sigma)
-	sigma = meanQerr[p];
+      // if(meanQerr[p] > sigma)
+      // 	sigma = meanQerr[p];
+      sigma += meanQerr[p]/double(Npoint);
     }
 
     vgraph.push_back(new TGraphErrors(Npoint, DAC, meanQ, 0, meanQerr));

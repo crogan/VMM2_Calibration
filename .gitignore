@@ -1,6 +1,10 @@
 dat2root
 Fit_xADC
 Calibrate_xADC
+Fit_PDO
+Calibrate_PDO
+Fit_TDO
+Calibrate_TDO
 *.DS_Store
 *~
 *.pyc

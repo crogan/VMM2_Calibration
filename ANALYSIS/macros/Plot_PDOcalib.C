@@ -9,8 +9,8 @@
 #include "include/DACToCharge.hh"
 #include "include/VMM_data.hh"
   
-const string X_label = "PDO";
-const string Y_label = "Induced Charge (fC)";
+const string X_label = "Injected Charge (fC)";
+const string Y_label = "PDO";
 
 void Plot_PDOcalib(const string& filename, const string& xADCcalib_file, int VMM = 2, int CH = 15){
   setstyle();
@@ -82,7 +82,6 @@ void Plot_PDOcalib(const string& filename, const string& xADCcalib_file, int VMM
     if(I <= 0.)
       continue;
     Y_pdo[index] = vhist[i]->GetMean();
-    Yerr_pdo[index] = vhist[i]->GetRMS()/sqrt(I);
     Yerr_pdo[index] = max(vhist[i]->GetRMS(), 1.);
     X_Q[index] = vcharge[i];
     Xerr_Q[index] = vcharge_err[i];
@@ -92,7 +91,7 @@ void Plot_PDOcalib(const string& filename, const string& xADCcalib_file, int VMM
   }
   
   if(Npoint < 2) return;
-  TGraphErrors* gr = new TGraphErrors(Npoint, X_Q, Y_pdo, 0, Yerr_pdo);
+  TGraphErrors* gr = new TGraphErrors(Npoint, X_Q, Y_pdo, Xerr_Q, Yerr_pdo);
 
   TF1* func = new TF1("func", P1_P2_P0, 0., 400., 4);
 

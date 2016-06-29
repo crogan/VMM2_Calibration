@@ -9,6 +9,8 @@ using namespace std;
 const double fC_per_xADC_count = 1.2 / 4.096;
 
 int main(int argc, char* argv[]){
+  setstyle();
+
   char inputFileName[400];
   char outputFileName[400];
 
