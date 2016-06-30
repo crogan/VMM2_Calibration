@@ -28,6 +28,9 @@ VMM response:
 
 ### Step 1c: Collect TDO calibration data
 
+NOTE: make sure to take TDO calibration data with test pulse DAC at
+200 and with (at least) delays 0, 1, 2, 3, 4.
+
 ## Step 2: Use the collected data to determine calibrations
 
 Once you have collected calibration data for a MMFE8 board(s) you can
@@ -163,7 +166,56 @@ use in data analysis (see step 3).
 
 ### Step 2c: Calibrate the TDO response
 
+For this step, you must first produce a `*.root` file using the
+calibration GUI in step 1c. An example of such a file is included in
+`DATA/TP/TDO_example.root`, which will be used in the example commands
+below. NOTE: currently, the below steps assume that you have taken TDO
+calibration data with test pulse DAC at 200, and delays of 0, 1, 2,
+3, 4. All other delays are currently ignored, as are other test pulse
+DAC values.
 
+To extract the means and widths of the TDO distributions, as a
+function of delay, do:
+
+	cmd_line$> ./Fit_TDO TDO_example.root -o TDO_fit.root
+
+To then fit these values and produce a calibration file, do
+
+	cmd_line$> ./Calibrate_TDO TDO_fit.root -o TDO_calib.root
+
+There are various plots included in the above two output root files
+for checking that each step was executed successfully.
 
 ## Step 3: Use your calibrations in analyses
 
+There are three object classes available to interpret the calibration
+files produced in steps 2a-c which provide simple methods for
+accessing calibrated charges and times.
+
+For xADC calibrations, there is the class `DACToCharge`, implemented
+in `include/DACToCharge.hh`. To use this class in your code, include
+the header file and, if using a ROOT macro, make sure to use the
+compile option `++` (ex. `root [0] .x your_macro.C++`).
+
+To instantiate a DACToCharge object, the constructor takes a `string`
+or `char *` corresponding to the filename of the xADC calibration
+(ex. `xADC_calib.root` produced in the last part of step 2a). There
+are then class methods which take test pulse DAC, MMFE8 number, and
+VMM number as input and return the calibrated injected charge in
+fC. Some example code would look like:
+
+	#include "include/DACToCharge.hh"
+	...
+	DACToCharge myDACToCharge("xADC_calib.root");
+	...
+	double charge = myDACToCharge.GetCharge(DAC, MMFE8, VMM);
+	...
+
+For the PDO and TDO calibrations there are classes `PDOToCharge` and
+`TDOToTime`, respectively, each with similar constructors (passing
+name of calibration file) and class methods (`GetCharge(double PDO,
+int MMFE8, int VMM, int CH)` and `GetTime(double TDO,
+int MMFE8, int VMM, int CH)`, respectively).
+
+An example ROOT macro using the `DACToCharge` and `PDOToCharge`
+classes can be found at `ANALYSIS/macros/Test_PDOcalib.C`.
