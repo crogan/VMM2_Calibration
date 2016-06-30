@@ -131,6 +131,51 @@ const TColor lime2(7072,0.706,0.8,0.38);
 const TColor lime3(7073,0.455,0.557,0.098);
 const TColor lime4(7074,0.204,0.263,0);
 
+TCanvas* Plot_Graph(string scan, TGraph* graph, string X, string Y, string title){
+  TCanvas *c1 = new TCanvas(scan.c_str(),scan.c_str(),600,500);
+  c1->SetLeftMargin(0.15);
+  c1->SetRightMargin(0.05);
+  c1->SetBottomMargin(0.15);
+  c1->SetTopMargin(0.08);
+  c1->Draw();
+  c1->SetGridx();
+  c1->SetGridy();
+  
+  graph->Draw("ap");
+  graph->GetXaxis()->SetTitle(X.c_str());
+  graph->GetXaxis()->CenterTitle();
+  graph->GetXaxis()->SetTitleOffset(1.08);
+  graph->GetYaxis()->SetTitle(Y.c_str());
+  graph->GetYaxis()->SetTitleOffset(1.3);
+  graph->GetYaxis()->CenterTitle();
+  graph->SetMarkerStyle(4);
+  graph->SetMarkerColor(7013);
+  graph->SetMarkerSize(3);
+  
+  TLatex l;
+  l.SetTextFont(132);	
+  l.SetNDC();	
+  l.SetTextSize(0.05);
+  l.SetTextFont(132);
+  l.DrawLatex(0.5,0.94,title.c_str());
+  l.SetTextSize(0.045);
+  l.SetTextFont(42);
+  l.DrawLatex(0.02,0.94,"#bf{#it{ATLAS}} Internal - MMFE8+VMM2");
+
+  TF1* func = (TF1*) graph->GetListOfFunctions()->First();
+  if(func){
+    func->SetLineColor(7022);
+    func->SetLineWidth(3);
+    // func->SetNpx(50000);
+    // TH1F* hfunc = (TH1F*)func->GetHistogram();
+    // hfunc->SetLineColor(7012);
+    // hfunc->SetLineWidth(3);
+    // hfunc->Draw("SAME");
+  }
+	
+  return c1;
+}
+
 TCanvas* Plot_2D(string scan, TH2D* histo, string X, string Y, string Z, string title){
   TCanvas *c1 = new TCanvas(scan.c_str(),scan.c_str(),600,500);
   c1->SetLeftMargin(0.15);
