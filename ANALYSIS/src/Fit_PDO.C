@@ -209,9 +209,9 @@ int main(int argc, char* argv[]){
 	fit_DAC = vDAC[i][c][d];
 	double I = vhist[i][c][d]->Integral();
 	fit_meanPDO = vhist[i][c][d]->GetMean();
-	fit_meanPDOerr = max(vhist[i][c][d]->GetMean()/sqrt(I),1.);
+	fit_meanPDOerr = max(vhist[i][c][d]->GetRMS()/sqrt(I),1.);
 	fit_sigmaPDO = max(vhist[i][c][d]->GetRMS(),1.);
-	fit_sigmaPDOerr = max(vhist[i][c][d]->GetRMS()/sqrt(I),1.);
+	fit_sigmaPDOerr = max(vhist[i][c][d]->GetRMSError(),1.);
 	fit_chi2 = 0.;
 	fit_prob = 1.;
 	
@@ -224,22 +224,4 @@ int main(int argc, char* argv[]){
   fout->cd("");
   fit_tree->Write();
   fout->Close();
-}
-
-
-
-// General normal distribution with integral N
-double normal_distribution(double N, double mu, double sg, double x){
-  double pi = atan(1.)*4;
-  double G = exp(-pow(x - mu,2) / (2 * pow(sg,2))) / (sqrt(2 * pi) * sg);
-  return N * G;
-}
-
-// Custom function for test pulse DAC fit, two Gaussians.
-// Invariants: parameters: {N0, mu0, sig0, N1, mu1, sig1}
-double double_gaus_function(double* xs, double* par){
-  float x = xs[0];
-  double G0 = normal_distribution(par[0], par[1], par[2], x);
-  double G1 = normal_distribution(par[3], par[4], par[5], x);
-  return G0 + G1;
 }

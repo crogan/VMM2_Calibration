@@ -208,7 +208,6 @@ int main(int argc, char* argv[]){
 	if(Nhist <= 0.) continue;
 	
 	double h_mean = vhist[index][d]->GetMean();
-	double h_rms  = vhist[index][d]->GetRMS();
 	
 	char fname[50];
 	sprintf(fname, "func_MMFE8-%d_VMM-%d_DAC-%d", 
@@ -243,10 +242,6 @@ int main(int argc, char* argv[]){
 	if(fabs(bmax-bmax0)/(bmax+bmax0) > 0.5){
 	  mu = mu0+1.;
 	  max_delta = 400.;
-	}
-
-	if(vDAC[index][d] == 40 && vVMM[index] == 0){
-	  cout << mu << " " << mu0 << " " << h_rms << endl;
 	}
 
 	vfunc[ifunc]->SetParName(1, "#mu-#mu_{0}");
@@ -436,22 +431,4 @@ int main(int argc, char* argv[]){
   fout->cd("");
   fit_tree->Write();
   fout->Close();
-}
-
-
-
-// General normal distribution with integral N
-double normal_distribution(double N, double mu, double sg, double x){
-  double pi = atan(1.)*4;
-  double G = exp(-pow(x - mu,2) / (2 * pow(sg,2))) / (sqrt(2 * pi) * sg);
-  return N * G;
-}
-
-// Custom function for test pulse DAC fit, two Gaussians.
-// Invariants: parameters: {N0, mu0, sig0, N1, mu1, sig1}
-double double_gaus_function(double* xs, double* par){
-  float x = xs[0];
-  double G0 = normal_distribution(par[0], par[1], par[2], x);
-  double G1 = normal_distribution(par[3], par[4], par[5], x);
-  return G0 + G1;
 }

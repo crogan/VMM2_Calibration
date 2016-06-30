@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
     cout << " and an (optional) output filename" << endl;
     cout << "Example:   ./Calibrate_PDO input_file.root -x xADCcalib_file.root" << endl;
     cout << "Example:   ./Calibrate_PDO input_file.root -x xADCcalib_file.root -o output_file.root" << endl;
-    return 1;
+    return 0;
   }
 
   sscanf(argv[1],"%s", inputFileName);
@@ -41,6 +41,7 @@ int main(int argc, char* argv[]){
     cout << "Error at Input: please specify an xADC calibration file: " << endl;
     cout << "Example:   ./Calibrate_PDO input_file.root -x xADCcalib_file.root" << endl;
     cout << "Example:   ./Calibrate_PDO input_file.root -x xADCcalib_file.root -o output_file.root" << endl;
+    return 0;
   }
 
   string output_name;
@@ -256,11 +257,7 @@ int main(int argc, char* argv[]){
       
       vfunc[ifunc]->SetParLimits(3, -10000., 0.);
       
-      if(vVMM[i] != 0 && vVMM[i] != 1){
-	cout << vVMM[i] << " " << vCH[i][c] << endl;
-	cout << vmax[i][c] << " " << vQmax[i][c] << endl;
-	vgraph[i][c]->Fit(fname, "EQ");
-      }
+      vgraph[i][c]->Fit(fname, "EQ");
 
       char stitle[50];
       sprintf(stitle, "Board #%d, VMM #%d , CH #%d", vMMFE8[i], vVMM[i], vCH[i][c]);

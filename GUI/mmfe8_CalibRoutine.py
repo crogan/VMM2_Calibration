@@ -190,8 +190,8 @@ class MMFE8:
             with open(filename, 'a') as myfile:
                 for j, xADC in enumerate(pd_ints):
                     # Note: Saves XADC in counts
-                    s = "VMM={0:d}, CKTPrunning={1:d}, PDAC={2:d}, XADC={3:d}\n".format((j+1),
-                                  pulses_on, pulse_DAC_value, xADC)
+                    s = "VMM={0:d}, CKTPrunning={1:d}, PDAC={2:d}, XADC={3:d}, MMFE8={4:d}\n".format(j,
+                                  pulses_on, pulse_DAC_value, xADC, 0) # need to add correct MMFE8
                     myfile.write(s)
         return
 
@@ -971,28 +971,28 @@ class MMFE8:
                                         self.VMM[ivmm-1].combo_ST.set_active(peak)
 
                                     # masked channels
-                                    for ivmm in self.Cur_VMM:
-                                        if ivmm is 1:
-                                            self.deactivate_channel(ivmm,1)
-                                            self.deactivate_channel(ivmm,2)
-                                        if ivmm is 2:
-                                            self.deactivate_channel(ivmm,1)
-                                            self.deactivate_channel(ivmm,4)
-                                        if ivmm is 3:
-                                            self.deactivate_channel(ivmm,2)
-                                        if ivmm is 5:
-                                            self.deactivate_channel(ivmm,1)
-                                            self.deactivate_channel(ivmm,2)
-                                            self.deactivate_channel(ivmm,3)
-                                            self.deactivate_channel(ivmm,4)
-                                        if ivmm is 6:
-                                            self.deactivate_channel(ivmm,1)
-                                            self.deactivate_channel(ivmm,2)
-                                            self.deactivate_channel(ivmm,4)
-                                        if ivmm is 7:
-                                            self.deactivate_channel(ivmm,2)
-                                        if ivmm is 8:
-                                            self.deactivate_channel(ivmm,2)
+                                    #for ivmm in self.Cur_VMM:
+                                    #    if ivmm is 1:
+                                    #        self.deactivate_channel(ivmm,1)
+                                    #        self.deactivate_channel(ivmm,2)
+                                    #    if ivmm is 2:
+                                    #        self.deactivate_channel(ivmm,1)
+                                    #        self.deactivate_channel(ivmm,4)
+                                    #    if ivmm is 3:
+                                    #        self.deactivate_channel(ivmm,2)
+                                    #    if ivmm is 5:
+                                    #        self.deactivate_channel(ivmm,1)
+                                    #        self.deactivate_channel(ivmm,2)
+                                    #        self.deactivate_channel(ivmm,3)
+                                    #        self.deactivate_channel(ivmm,4)
+                                    #    if ivmm is 6:
+                                    #        self.deactivate_channel(ivmm,1)
+                                    #        self.deactivate_channel(ivmm,2)
+                                    #        self.deactivate_channel(ivmm,4)
+                                    #    if ivmm is 7:
+                                    #        self.deactivate_channel(ivmm,2)
+                                    #    if ivmm is 8:
+                                    #        self.deactivate_channel(ivmm,2)
 
                                     # set delay counts
                                     self.SetDelayCount(delay)
@@ -1242,6 +1242,7 @@ class MMFE8:
 
         [tpDAC_min, tpDAC_max, tpDAC_step] = [int(obj.get_text()) for obj in [self.text_xADC_minTP, self.text_xADC_maxTP,self.text_xADC_stepTP]]
         for tpDAC in range(tpDAC_min, tpDAC_max + 1, tpDAC_step):
+            print "Runnung tpDAC "+str(tpDAC) 
             self.CR_xADC_readout(tpDAC, int(self.notebook.get_current_page()))
 
         cmd = "dat2root %s -o %s" % (self.CRLoop_Output_dat,self.CRLoop_Output_root)
@@ -1256,6 +1257,7 @@ class MMFE8:
         daq_count = []
         for ivmm in self.Cur_VMM:
             daq_count += [0]
+        daq_count_tot = 0
         starting = time.time()
         fifototal = 0
         while True:
@@ -1344,6 +1346,11 @@ class MMFE8:
 
                         with open(self.CRLoop_Output_dat, 'a') as myfile:
                             myfile.write(output_string+'\n')
+
+                        # all word counting for early termination
+                        daq_count_tot += 1
+                        if daq_count_tot > 1000:
+                            return
 
                         # data word counting for early termination
                         if CHword is self.Cur_chan:

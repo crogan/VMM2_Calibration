@@ -31,7 +31,7 @@ public:
 
       if(m_MMFE8VMM_to_index.count(key) == 0){
 	m_MMFE8VMM_to_index[key] = m_CH_to_index.size();
-	m_CH_to_index.push_back(map<int,int>);
+	m_CH_to_index.push_back(map<int,int>());
       }
 
       int index = m_MMFE8VMM_to_index[key];

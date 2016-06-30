@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
 
     vDAC[index].push_back(base->DAC);
     vmeanQ[index].push_back(base->meanQ);
-    vmeanQerr[index].push_back(base->sigmaQ);
+    vmeanQerr[index].push_back(base->meanQerr);
   }
 
   int Nindex = vMMFE8.size();
