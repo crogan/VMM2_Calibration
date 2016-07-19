@@ -536,7 +536,8 @@ class MMFE8:
         if delay < 0:
             return None
         
-        MSGsend1 = "W 0x44A10138 {0:02x} \0\n".format(delay)
+        MSGsend1 = "W 0x44A10138 " + hex(int(delay)) + " \0\n"
+#        MSGsend1 = "W 0x44A10138 {0:02x} \0\n".format(delay)
         self.udp.udp_client(MSGsend1,self.UDP_IP,self.UDP_PORT)
             # sleep(.1)
             
