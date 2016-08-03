@@ -154,6 +154,7 @@ int main(int argc, char* argv[]){
 	meanPDOerr[p] = vmeanPDOerr[i][c][p];
 	meanQ[p] = DAC2Charge.GetCharge(DAC[p], vMMFE8[i], vVMM[i]);
 	meanQerr[p] = DAC2Charge.GetChargeError(DAC[p], vMMFE8[i], vVMM[i]);
+	meanQerr[p] = std::min(meanQerr[p],1.);
 	if(meanPDO[p] > 1.02*vmax[i][c]){
 	  vmax[i][c]  = meanPDO[p];
 	  vQmax[i][c] = meanQ[p];
