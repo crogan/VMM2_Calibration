@@ -8,7 +8,9 @@
 #include <TColor.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TGraph.h>
 #include <TGraphErrors.h>
+#include <TMultiGraph.h>
 #include <TLegend.h>
 #include <TCanvas.h>
 #include <TLatex.h>
@@ -140,17 +142,38 @@ TCanvas* Plot_Graph(string scan, TGraph* graph, string X, string Y, string title
   c1->Draw();
   c1->SetGridx();
   c1->SetGridy();
+
+  double x[1];
+  x[0] = 0.;
+  double y[1];
+  y[0] = 0.;
+  TGraph* gr = new TGraph(1,x,y);
   
-  graph->Draw("ap");
-  graph->GetXaxis()->SetTitle(X.c_str());
-  graph->GetXaxis()->CenterTitle();
-  graph->GetXaxis()->SetTitleOffset(1.08);
-  graph->GetYaxis()->SetTitle(Y.c_str());
-  graph->GetYaxis()->SetTitleOffset(1.3);
-  graph->GetYaxis()->CenterTitle();
+  TMultiGraph *mg = new TMultiGraph();
+  mg->Add(graph);
+  mg->Add(gr);
+
+  mg->Draw("ap");
+  mg->GetXaxis()->SetTitle(X.c_str());
+  mg->GetXaxis()->CenterTitle();
+  mg->GetXaxis()->SetTitleOffset(1.08);
+  mg->GetYaxis()->SetTitle(Y.c_str());
+  mg->GetYaxis()->SetTitleOffset(1.3);
+  mg->GetYaxis()->CenterTitle();
   graph->SetMarkerStyle(4);
   graph->SetMarkerColor(7013);
   graph->SetMarkerSize(3);
+  
+  // graph->Draw("ap");
+  // graph->GetXaxis()->SetTitle(X.c_str());
+  // graph->GetXaxis()->CenterTitle();
+  // graph->GetXaxis()->SetTitleOffset(1.08);
+  // graph->GetYaxis()->SetTitle(Y.c_str());
+  // graph->GetYaxis()->SetTitleOffset(1.3);
+  // graph->GetYaxis()->CenterTitle();
+  // graph->SetMarkerStyle(4);
+  // graph->SetMarkerColor(7013);
+  // graph->SetMarkerSize(3);
   
   TLatex l;
   l.SetTextFont(132);	
