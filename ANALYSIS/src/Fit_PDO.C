@@ -72,6 +72,9 @@ int main(int argc, char* argv[]){
   for (int i = 0; i < N; i++){
     base->GetEntry(i);
 
+    // if(base->VMM == 0)
+    //   continue;
+    
     if(base->CHword != base->CHpulse)
       continue;
 
