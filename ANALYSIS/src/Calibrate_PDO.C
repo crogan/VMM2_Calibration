@@ -246,16 +246,21 @@ int main(int argc, char* argv[]){
       int ifunc = vfunc.size();
       vfunc.push_back(new TF1(fname, P1_P2_P0, 0., 400., 4));
 
+      if(vVMM[i] == 1 && vCH[i][c] == 14)
+	cout << vmax[i][c] << " " << vQmax[i][c] << endl;
+      
       vfunc[ifunc]->SetParName(0, "c_{0}");
       vfunc[ifunc]->SetParameter(0, vmax[i][c]);
       vfunc[ifunc]->SetParName(1, "A_{2}");
-      vfunc[ifunc]->SetParameter(1, -0.5);
+      //vfunc[ifunc]->SetParameter(1, -0.5);
+      vfunc[ifunc]->SetParameter(1, -1.);
       vfunc[ifunc]->SetParName(2, "t_{0 , 2}");
       vfunc[ifunc]->SetParameter(2, vQmax[i][c]);
       vfunc[ifunc]->SetParName(3, "d_{2 , 1}");
       vfunc[ifunc]->SetParameter(3, -10.);
       
       vfunc[ifunc]->SetParLimits(3, -10000., 0.);
+      vfunc[ifunc]->SetParLimits(1, -10000., 0.);
       
       vgraph[i][c]->Fit(fname, "EQ");
 
