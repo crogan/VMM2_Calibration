@@ -61,14 +61,16 @@ int main(int argc, char* argv[]){
   vector<int>             vMMFE8;               // board ID
   vector<int>             vVMM;                 // VMM number
   vector<vector<int> >    vCH;                  // channel number
-  vector<vector<vector<TH1D*> > >  vhist;       // PDO histograms
-  vector<vector<vector<int> > >    vDelay;      // DAC value
+  vector<vector<TH1D*> >           vhist_all;   // all TDO histograms
+  vector<vector<vector<TH1D*> > >  vhist;       // TDO histograms by delay
+  vector<vector<vector<int> > >    vDelay;      // Delay value
   vector<vector<vector<string> > > vlabel;      // label
 
   int MMFE8;
   int VMM;
   int Delay;
   int CH;
+  cout << "Processing Trees" << endl;
   for (int i = 0; i < N; i++){
     base->GetEntry(i);
 
@@ -81,18 +83,14 @@ int main(int argc, char* argv[]){
     if(base->TDO <=  0)
       continue;
 
-    // only take TPDAC == 200
-    // right now
-    if(base->TPDAC != 200)
-      continue;
-
     // only take first 5 delays
-    if(base->Delay > 4)
-      continue;
+    // if(base->Delay > 4)
+    //   continue;
 
     MMFE8 = base->MMFE8;
     VMM   = base->VMM;
-    Delay = base->Delay;
+    //Delay = base->Delay;
+    Delay = base->Delay%5;
     CH    = base->CHword;
     
     // add a new MMFE8+VMM entry if
@@ -108,6 +106,7 @@ int main(int argc, char* argv[]){
       vhist.push_back(vector<vector<TH1D*> >());
       vDelay.push_back(vector<vector<int> >());
       vlabel.push_back(vector<vector<string> >());
+      vhist_all.push_back(vector<TH1D*>());
     }
 
     // MMFE8+VMM index
@@ -123,12 +122,25 @@ int main(int argc, char* argv[]){
       vhist[index].push_back(vector<TH1D*>());
       vDelay[index].push_back(vector<int>());
       vlabel[index].push_back(vector<string>());
+      char shist_all[20];
+      sprintf(shist_all,"%d_%d_%d_all",MMFE8,VMM,CH);
+      TH1D* hist = new TH1D(("h_"+string(shist_all)).c_str(),
+			    ("h_"+string(shist_all)).c_str(),
+			    4096, -0.5, 4095.5);
+      vhist_all[index].push_back(hist);
     }
 
     // CH index
     int cindex = vCH_to_index[index][CH];
 
-    // add a new histogram if this DAC
+    vhist_all[index][cindex]->Fill(base->TDO);
+
+    // only take TPDAC == 200
+    // right now
+    if(base->TPDAC != 200)
+      continue;
+
+    // add a new histogram if this Delay
     // combination is new for the MMFE8+VMM+CH combo
     if(vDelay_to_hist[index][cindex].count(Delay) == 0){
       char sDelay[20];
@@ -155,6 +167,7 @@ int main(int argc, char* argv[]){
   // MMFE8+VMM+CH combo to output file
   fout->mkdir("TDO_plots");
   fout->cd("TDO_plots");
+  cout << "Drawing Histograms" << endl;
   for(int i = 0; i < Nindex; i++){ 
     char sfold[50];
     sprintf(sfold, "TDO_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
@@ -165,11 +178,18 @@ int main(int argc, char* argv[]){
     for(int c = 0; c < Ncindex; c++){
       char stitle[50];
       sprintf(stitle, "Board #%d, VMM #%d , CH #%d", vMMFE8[i], vVMM[i], vCH[i][c]);
-      char scan[50];
-      sprintf(scan, "c_TDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
-      TCanvas* can = Plot_1D(scan, vhist[i][c], "TDO", "Count", stitle, vlabel[i][c]);
-      can->Write();
-      delete can;
+      if(vhist[i][c].size() > 0){
+	char scan[50];
+	sprintf(scan, "c_TDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
+	TCanvas* can = Plot_1D(scan, vhist[i][c], "TDO", "Count", stitle, vlabel[i][c]);
+	can->Write();
+	delete can;
+      }
+      char scan_all[100];
+      sprintf(scan_all, "c_allTDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
+      TCanvas* can_all = Plot_1D(scan_all, vhist_all[i][c], "TDO", "Count", stitle);
+      can_all->Write();
+      delete can_all;
     }
   }
   fout->cd("");
@@ -193,6 +213,8 @@ int main(int argc, char* argv[]){
   double fit_sigmaTDOerr;
   double fit_chi2;
   double fit_prob;
+  double fit_minTDO;
+  double fit_maxTDO;
   
   TTree* fit_tree = new TTree("TDO_fit", "TDO_fit");
   fit_tree->Branch("MMFE8", &fit_MMFE8);
@@ -205,14 +227,36 @@ int main(int argc, char* argv[]){
   fit_tree->Branch("sigmaTDOerr", &fit_sigmaTDOerr);
   fit_tree->Branch("chi2", &fit_chi2);
   fit_tree->Branch("prob", &fit_prob);
+  fit_tree->Branch("minTDO", &fit_minTDO);
+  fit_tree->Branch("maxTDO", &fit_maxTDO);
 
-  // currently, no fit performed extracting PDO values
+  cout << "Extracting TDO values" << endl;
+
+  // currently, no fit performed extracting TDO values
   for(int i = 0; i < Nindex; i++){
     fit_MMFE8 = vMMFE8[i];
     fit_VMM = vVMM[i];
     int Ncindex = vCH[i].size();
     for(int c = 0; c < Ncindex; c++){
+      if(vhist[i][c].size() <= 0)
+	 continue;
       fit_CH = vCH[i][c];
+
+      fit_minTDO = 0; 
+      fit_maxTDO = 4000;
+      for(int b = 1; b < 4000; b++){
+	if(vhist_all[i][c]->GetBinContent(b) > 0){
+	  fit_minTDO = b-1;
+	  break;
+	}
+      }
+      for(int b = 4000; b >= 1; b--){
+	if(vhist_all[i][c]->GetBinContent(b) > 0){
+	  fit_maxTDO = b-1;
+	  break;
+	}
+      }
+
       int Ndelay = vDelay[i][c].size();
       for(int d = 0; d < Ndelay; d++){
 	fit_Delay = vDelay[i][c][d];
