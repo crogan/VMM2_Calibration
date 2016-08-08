@@ -59,6 +59,7 @@ int main(int argc, char* argv[]){
   vector<int>             vMMFE8;               // board ID
   vector<int>             vVMM;                 // VMM number
   vector<vector<int> >    vCH;                  // channel number
+  vector<vector<vector<double> > > vminTDO;     // min TDO
   vector<vector<vector<double> > > vmeanTDO;    // mean TDO
   vector<vector<vector<double> > > vmeanTDOerr; // mean TDO err
   vector<vector<vector<int> > >    vDelay;      // Delay value
@@ -72,7 +73,7 @@ int main(int argc, char* argv[]){
 
     // exclude cases where TDO is split 
     // between low/high due to BCID jump
-    if(base->sigmaTDO > 3.)
+    if(base->sigmaTDO > 3.5)
       continue;
 
     MMFE8 = base->MMFE8;
@@ -87,6 +88,7 @@ int main(int argc, char* argv[]){
       vVMM.push_back(VMM);
       vCH.push_back(vector<int>());
       vCH_to_index.push_back(map<int,int>());
+      vminTDO.push_back(vector<vector<double> >());
       vmeanTDO.push_back(vector<vector<double> >());
       vmeanTDOerr.push_back(vector<vector<double> >());
       vDelay.push_back(vector<vector<int> >());
@@ -101,6 +103,7 @@ int main(int argc, char* argv[]){
       int ind = int(vCH[index].size());
       vCH_to_index[index][CH] = ind;
       vCH[index].push_back(CH);
+      vminTDO[index].push_back(vector<double>());
       vmeanTDO[index].push_back(vector<double>());
       vmeanTDOerr[index].push_back(vector<double>());
       vDelay[index].push_back(vector<int>());
@@ -110,6 +113,7 @@ int main(int argc, char* argv[]){
     int cindex = vCH_to_index[index][CH];
 
     vDelay[index][cindex].push_back(base->Delay);
+    vminTDO[index][cindex].push_back(base->minTDO);
     vmeanTDO[index][cindex].push_back(base->meanTDO);
     vmeanTDOerr[index][cindex].push_back(base->meanTDOerr);
   }
@@ -198,7 +202,6 @@ int main(int argc, char* argv[]){
   fout->cd("TDOcalib_plots");
   
   vector<TF1*> vfunc;
-  
   vector<vector<TGraphErrors*> > vgraph;
   for(int i = 0; i < Nindex; i++){
     char sfold[50];
@@ -248,34 +251,39 @@ int main(int argc, char* argv[]){
 	}
   	meanDerr[p] = 0.;
       }
+      int igraph = vgraph[i].size();
       vgraph[i].push_back(new TGraphErrors(Npoint, meanD, meanTDO, meanDerr, meanTDOerr));
-    
+
       char fname[50];
       sprintf(fname, "funcP1_MMFE8-%d_VMM-%d_CH-%d", 
   	      vMMFE8[i], vVMM[i], vCH[i][c]);
+      
       int ifunc = vfunc.size();
       vfunc.push_back(new TF1(fname, P1, 0., 400., 2));
-
+      
       vfunc[ifunc]->SetParName(0, "C");
       vfunc[ifunc]->SetParName(1, "S");
       
-      vgraph[i][c]->Fit(fname, "EQ");
+      vgraph[i][igraph]->Fit(fname, "EQ");
 
       char stitle[50];
       sprintf(stitle, "Board #%d, VMM #%d , CH #%d", vMMFE8[i], vVMM[i], vCH[i][c]);
       char scan[50];
       sprintf(scan, "c_TDOvDelay_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
-      TCanvas* can = Plot_Graph(scan, vgraph[i][c], "Converted Time Delay [ns]", "TDO", stitle);
+      TCanvas* can = Plot_Graph(scan, vgraph[i][igraph], "Converted Time Delay [ns]", "TDO", stitle);
       can->Write();
       delete can;
-      
+
       calib_MMFE8 = vMMFE8[i];
       calib_VMM = vVMM[i];
       calib_CH = vCH[i][c];
-      calib_C = vfunc[ifunc]->GetParameter(0);
+      //calib_C = vfunc[ifunc]->GetParameter(0);
       calib_S = vfunc[ifunc]->GetParameter(1);
       calib_chi2 = vfunc[ifunc]->GetChisquare();
       calib_prob = vfunc[ifunc]->GetProb();
+
+      // set min to 12.5 ns
+      calib_C = vminTDO[i][c][0] - calib_S*12.5;
 
       calib_tree->Fill();
     }
