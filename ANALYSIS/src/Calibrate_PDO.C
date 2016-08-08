@@ -155,7 +155,7 @@ int main(int argc, char* argv[]){
 	meanQ[p] = DAC2Charge.GetCharge(DAC[p], vMMFE8[i], vVMM[i]);
 	meanQerr[p] = DAC2Charge.GetChargeError(DAC[p], vMMFE8[i], vVMM[i]);
 	meanQerr[p] = std::min(meanQerr[p],1.);
-	if(meanPDO[p] > 1.02*vmax[i][c]){
+	if(meanPDO[p] > 1.05*vmax[i][c]){
 	  vmax[i][c]  = meanPDO[p];
 	  vQmax[i][c] = meanQ[p];
 	}
@@ -247,7 +247,7 @@ int main(int argc, char* argv[]){
       int ifunc = vfunc.size();
       vfunc.push_back(new TF1(fname, P1_P2_P0, 0., 400., 4));
 
-      if(vVMM[i] == 1 && vCH[i][c] == 14)
+      if(vVMM[i] == 2 && vCH[i][c] == 6)
 	cout << vmax[i][c] << " " << vQmax[i][c] << endl;
       
       vfunc[ifunc]->SetParName(0, "c_{0}");
