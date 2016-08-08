@@ -32,6 +32,8 @@ public :
    Double_t        sigmaTDOerr;
    Double_t        chi2;
    Double_t        prob;
+   Double_t        minTDO;
+   Double_t        maxTDO;
 
    // List of branches
    TBranch        *b_MMFE8;   //!
@@ -44,6 +46,8 @@ public :
    TBranch        *b_sigmaTDOerr;   //!
    TBranch        *b_chi2;   //!
    TBranch        *b_prob;   //!
+   TBranch        *b_minTDO;   //!
+   TBranch        *b_maxTDO;   //!
 
    TDOfitBase(TTree *tree=0);
    virtual ~TDOfitBase();
@@ -123,6 +127,8 @@ inline void TDOfitBase::Init(TTree *tree)
    fChain->SetBranchAddress("sigmaTDOerr", &sigmaTDOerr, &b_sigmaTDOerr);
    fChain->SetBranchAddress("chi2", &chi2, &b_chi2);
    fChain->SetBranchAddress("prob", &prob, &b_prob);
+   fChain->SetBranchAddress("minTDO", &minTDO, &b_minTDO);
+   fChain->SetBranchAddress("maxTDO", &maxTDO, &b_maxTDO);
    Notify();
 }
 
