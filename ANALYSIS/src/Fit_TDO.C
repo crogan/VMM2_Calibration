@@ -55,6 +55,7 @@ int main(int argc, char* argv[]){
 
   map<pair<int,int>, int> MMFE8VMM_to_index;
   vector<map<int,int> >   vCH_to_index;
+  vector<map<int,int> >   vCH_to_maxDAC;
 
   vector<vector<map<int, TH1D*> > > vDelay_to_hist;
   
@@ -102,6 +103,7 @@ int main(int argc, char* argv[]){
       vVMM.push_back(VMM);
       vCH.push_back(vector<int>());
       vCH_to_index.push_back(map<int,int>());
+      vCH_to_maxDAC.push_back(map<int,int>());
       vDelay_to_hist.push_back(vector<map<int,TH1D*> >());
       vhist.push_back(vector<vector<TH1D*> >());
       vDelay.push_back(vector<vector<int> >());
@@ -117,6 +119,7 @@ int main(int argc, char* argv[]){
     if(vCH_to_index[index].count(CH) == 0){
       int ind = int(vCH[index].size());
       vCH_to_index[index][CH] = ind;
+      vCH_to_maxDAC[index][CH] = base->TPDAC;
       vCH[index].push_back(CH);
       vDelay_to_hist[index].push_back(map<int,TH1D*>());
       vhist[index].push_back(vector<TH1D*>());
@@ -135,9 +138,38 @@ int main(int argc, char* argv[]){
 
     vhist_all[index][cindex]->Fill(base->TDO);
 
-    // only take TPDAC == 200
-    // right now
-    if(base->TPDAC != 200)
+    if(base->TPDAC > vCH_to_maxDAC[index][CH])
+      vCH_to_maxDAC[index][CH] = base->TPDAC;
+  }
+
+  for (int i = 0; i < N; i++){
+    base->GetEntry(i);
+
+    if(base->CHword != base->CHpulse)
+      continue;
+
+    if(base->PDO <=  0)
+      continue;
+
+    if(base->TDO <=  0)
+      continue;
+
+    MMFE8 = base->MMFE8;
+    VMM   = base->VMM;
+    //Delay = base->Delay;
+    Delay = base->Delay%5;
+    CH    = base->CHword;
+
+    // MMFE8+VMM index
+    int index = MMFE8VMM_to_index[pair<int,int>(MMFE8,VMM)];
+
+    // CH index
+    int cindex = vCH_to_index[index][CH];
+
+    // take only max DAC
+    // if(base->TPDAC != 200)
+    //   continue;
+    if(base->TPDAC != vCH_to_maxDAC[index][CH])
       continue;
 
     // add a new histogram if this Delay
@@ -195,12 +227,12 @@ int main(int argc, char* argv[]){
   fout->cd("");
 
   // write VMM_data tree to outputfile
-  TTree* newtree = tree->CloneTree();
-  fout->cd();
-  newtree->Write();
-  delete newtree;
-  delete base;
-  delete tree;
+  // TTree* newtree = tree->CloneTree();
+  // fout->cd();
+  // newtree->Write();
+  // delete newtree;
+  // delete base;
+  // delete tree;
 
   // Output PDO fit tree
   double fit_MMFE8;
