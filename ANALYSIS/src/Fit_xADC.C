@@ -170,7 +170,8 @@ int main(int argc, char* argv[]){
 
   for(int index = 0; index < Nindex; index++){
     char sfold[50];
-    sprintf(sfold, "xADCfit_plots/Board%d_VMM%d", vMMFE8[index], vVMM[index]);
+    //sprintf(sfold, "xADCfit_plots/Board%d_VMM%d", vMMFE8[index], vVMM[index]);
+    sprintf(sfold, "Board%d_VMM%d", vMMFE8[index], vVMM[index]);
     fout->mkdir(sfold);
     fout->cd(sfold);
 
@@ -215,7 +216,7 @@ int main(int argc, char* argv[]){
 	int ifunc = vfunc.size();
 	vfunc.push_back(new TF1(fname, DoubleGaus, 
 				0., 4000., 6));
-	vfunc[ifunc]->SetLineColorAlpha(kWhite,0);
+	//vfunc[ifunc]->SetLineColorAlpha(kWhite,0);
 	
 	vfunc[ifunc]->SetParName(0, "N");
 	vfunc[ifunc]->SetParameter(0, Nhist/2.);
@@ -376,7 +377,7 @@ int main(int argc, char* argv[]){
 	int ifunc = vfunc.size();
 	
 	vfunc.push_back(new TF1(fname, Gaus, 0., 4000., 3));
-	vfunc[ifunc]->SetLineColorAlpha(kWhite,0);
+	//vfunc[ifunc]->SetLineColorAlpha(kWhite,0);
 	
 	double Nhist = vhist[index][d]->Integral();
 	if(Nhist <= 0.) return 0;

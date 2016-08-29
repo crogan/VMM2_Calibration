@@ -86,8 +86,8 @@ void setstyle(){
  double zcolor_g[5] = { 0.00, 0.61, 0.82, 0.70, 1.00 };
  double zcolor_b[5] = { 0.31, 0.73, 0.08, 0.00, 1.00 };
 
- TColor::CreateGradientColorTable(5, zcolor_s, zcolor_r,
-				  zcolor_g, zcolor_b, NZPalette);
+ //TColor::CreateGradientColorTable(5, zcolor_s, zcolor_r,
+ //				  zcolor_g, zcolor_b, NZPalette);
 
   gStyle->cd();
 }
@@ -325,7 +325,7 @@ TCanvas* Plot_1D(string can, vector<TH1D*>& histo, string X, string Y,
     histo[i]->Draw("SAME");
     TF1* func = (TF1*) histo[i]->GetListOfFunctions()->First();
     if(func){
-      func->SetLineColorAlpha(kWhite, 0);
+      //func->SetLineColorAlpha(kWhite, 0);
       func->SetLineWidth(0);
       func->SetNpx(50000);
       TH1F* hfunc = (TH1F*)func->GetHistogram();

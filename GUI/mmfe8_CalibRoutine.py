@@ -971,248 +971,252 @@ class MMFE8:
                                         # set peak time
                                         self.VMM[ivmm-1].combo_ST.set_active(peak)
 
-                                    if self.mmfeID is 100:
-                                        for ivmm in self.Cur_VMM:
-                                            if ivmm is 1:
-                                                self.deactivate_channel(ivmm,1)
-                                                self.deactivate_channel(ivmm,2)
-                                                self.deactivate_channel(ivmm,4)
-                                                self.deactivate_channel(ivmm,5)
-                                                self.deactivate_channel(ivmm,6)
-                                                self.deactivate_channel(ivmm,9)
-                                                self.deactivate_channel(ivmm,10)
-                                                self.deactivate_channel(ivmm,24)
-                                                self.deactivate_channel(ivmm,25)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 2:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 3:
-                                                self.deactivate_channel(ivmm,54)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 4:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 5:
-                                                self.deactivate_channel(ivmm,44)
-                                                self.deactivate_channel(ivmm,45)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 6:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 7:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 8:
-                                                self.deactivate_channel(ivmm,64)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()                                    
-                                    if self.mmfeID is 102:
-                                        for ivmm in self.Cur_VMM:
-                                            if ivmm is 1:
-                                                self.deactivate_channel(ivmm,24)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 2:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 3:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 4:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 5:
-                                                self.deactivate_channel(ivmm,1)
-                                                self.deactivate_channel(ivmm,29)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 6:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 7:
-                                                self.deactivate_channel(ivmm,22)
-                                                self.deactivate_channel(ivmm,52)
-                                                self.deactivate_channel(ivmm,58)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 8:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                    if self.mmfeID is 103:
-                                        for ivmm in self.Cur_VMM:
-                                            if ivmm is 1:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 2:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 3:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 4:
-                                                self.deactivate_channel(ivmm,58)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 5:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 6:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 7:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 8:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
+                                    # if self.mmfeID is 100:
+                                    #     for ivmm in self.Cur_VMM:
+                                    #         if ivmm is 1:
+                                    #             self.deactivate_channel(ivmm,1)
+                                    #             self.deactivate_channel(ivmm,2)
+                                    #             self.deactivate_channel(ivmm,4)
+                                    #             self.deactivate_channel(ivmm,5)
+                                    #             self.deactivate_channel(ivmm,6)
+                                    #             self.deactivate_channel(ivmm,9)
+                                    #             self.deactivate_channel(ivmm,10)
+                                    #             self.deactivate_channel(ivmm,24)
+                                    #             self.deactivate_channel(ivmm,25)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 2:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 3:
+                                    #             self.deactivate_channel(ivmm,54)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 4:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 5:
+                                    #             self.deactivate_channel(ivmm,44)
+                                    #             self.deactivate_channel(ivmm,45)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 6:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 7:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 8:
+                                    #             self.deactivate_channel(ivmm,64)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()                                    
+                                    # if self.mmfeID is 102:
+                                    #     for ivmm in self.Cur_VMM:
+                                    #         if ivmm is 1:
+                                    #             self.deactivate_channel(ivmm,24)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 2:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 3:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 4:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 5:
+                                    #             self.deactivate_channel(ivmm,1)
+                                    #             self.deactivate_channel(ivmm,29)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 6:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 7:
+                                    #             self.deactivate_channel(ivmm,22)
+                                    #             self.deactivate_channel(ivmm,52)
+                                    #             self.deactivate_channel(ivmm,58)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 8:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    # if self.mmfeID is 103:
+                                    #     for ivmm in self.Cur_VMM:
+                                    #         if ivmm is 1:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 2:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 3:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 4:
+                                    #             self.deactivate_channel(ivmm,58)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 5:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 6:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 7:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 8:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
 
-                                    if self.mmfeID is 104:
-                                        for ivmm in self.Cur_VMM:
-                                            if ivmm is 1:
-                                                self.deactivate_channel(ivmm,53)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 2:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 3:
-                                                self.deactivate_channel(ivmm,53)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 4:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 5:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 6:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 7:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 8:
-                                                self.deactivate_channel(ivmm,19)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
+                                    # if self.mmfeID is 104:
+                                    #     for ivmm in self.Cur_VMM:
+                                    #         if ivmm is 1:
+                                    #             self.deactivate_channel(ivmm,53)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 2:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 3:
+                                    #             self.deactivate_channel(ivmm,53)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 4:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 5:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 6:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 7:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 8:
+                                    #             self.deactivate_channel(ivmm,19)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
 
                                         
                                     if self.mmfeID is 105:
                                         for ivmm in self.Cur_VMM:
                                             if ivmm is 1:
-                                                self.deactivate_channel(ivmm,30)
-                                                #self.deactivate_channel(ivmm,2)
+                                                self.deactivate_channel(ivmm,1)
+                                                self.deactivate_channel(ivmm,53)
                                                 self.VMM[ivmm-1].entry_SDT.set_text(str(300))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 2:
-                                                #self.deactivate_channel(ivmm,1)
-                                                #self.deactivate_channel(ivmm,4)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(260))
+                                                self.deactivate_channel(ivmm,1)
+                                                self.deactivate_channel(ivmm,4)
+                                                self.deactivate_channel(ivmm,29)
+                                                self.VMM[ivmm-1].entry_SDT.set_text(str(300))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 3:
-                                                self.deactivate_channel(ivmm,3)
-                                                self.deactivate_channel(ivmm,6)
+                                                self.deactivate_channel(ivmm,2)
                                                 self.VMM[ivmm-1].entry_SDT.set_text(str(220))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 4:
-                                                self.deactivate_channel(ivmm,53)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                                self.VMM[ivmm-1].entry_SDT.set_text(str(240))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 5:
-                                                self.deactivate_channel(ivmm,16)
-                                                self.deactivate_channel(ivmm,17)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                                self.deactivate_channel(ivmm,1)
+                                                self.deactivate_channel(ivmm,2)
+                                                self.deactivate_channel(ivmm,3)
+                                                self.deactivate_channel(ivmm,4)
+                                                self.deactivate_channel(ivmm,11)
+                                                self.VMM[ivmm-1].entry_SDT.set_text(str(240))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 6:
-                                                # self.deactivate_channel(ivmm,1)
-                                                # self.deactivate_channel(ivmm,2)
-                                                # self.deactivate_channel(ivmm,4)
+                                                self.deactivate_channel(ivmm,1)
+                                                self.deactivate_channel(ivmm,18)
                                                 self.VMM[ivmm-1].entry_SDT.set_text(str(220))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 7:
-                                                # self.deactivate_channel(ivmm,2)
+                                                self.deactivate_channel(ivmm,1)
+                                                self.deactivate_channel(ivmm,2)
+                                                self.deactivate_channel(ivmm,22)
                                                 self.VMM[ivmm-1].entry_SDT.set_text(str(220))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
                                             if ivmm is 8:
-                                                self.deactivate_channel(ivmm,16)
-                                                self.deactivate_channel(ivmm,49)
-                                                self.deactivate_channel(ivmm,64)
+                                                self.deactivate_channel(ivmm,1)
+                                                self.deactivate_channel(ivmm,2)
+                                                self.deactivate_channel(ivmm,3)
                                                 self.VMM[ivmm-1].entry_SDT.set_text(str(220))
                                                 self.VMM[ivmm-1].entry_SDT.activate()
 
-                                    if self.mmfeID is 106:
-                                        for ivmm in self.Cur_VMM:
-                                            if ivmm is 1:
-                                                self.deactivate_channel(ivmm,2)
-                                                self.deactivate_channel(ivmm,6)
-                                                self.deactivate_channel(ivmm,9)
-                                                self.deactivate_channel(ivmm,26)
-                                                self.deactivate_channel(ivmm,29)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(360))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 2:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(300))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 3:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(300))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 4:
-                                                self.deactivate_channel(ivmm,12)
-                                                self.deactivate_channel(ivmm,58)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(300))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 5:
-                                                self.deactivate_channel(ivmm,6)
-                                                self.deactivate_channel(ivmm,8)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 6:
-                                                self.deactivate_channel(ivmm,25)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(260))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 7:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 8:
-                                                self.deactivate_channel(ivmm,64)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
+                                    # if self.mmfeID is 106:
+                                    #     for ivmm in self.Cur_VMM:
+                                    #         if ivmm is 1:
+                                    #             self.deactivate_channel(ivmm,2)
+                                    #             self.deactivate_channel(ivmm,6)
+                                    #             self.deactivate_channel(ivmm,9)
+                                    #             self.deactivate_channel(ivmm,26)
+                                    #             self.deactivate_channel(ivmm,29)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(360))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 2:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(300))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 3:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(300))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 4:
+                                    #             self.deactivate_channel(ivmm,12)
+                                    #             self.deactivate_channel(ivmm,58)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(300))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 5:
+                                    #             self.deactivate_channel(ivmm,6)
+                                    #             self.deactivate_channel(ivmm,8)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 6:
+                                    #             self.deactivate_channel(ivmm,25)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(260))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 7:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 8:
+                                    #             self.deactivate_channel(ivmm,64)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
 
                                     if self.mmfeID is 107:
                                         for ivmm in self.Cur_VMM:
                                             if ivmm is 1:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(300))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 2:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(260))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 3:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 4:
-                                                self.deactivate_channel(ivmm,25)
-                                                self.deactivate_channel(ivmm,29)
-                                                self.deactivate_channel(ivmm,42)
-                                                self.deactivate_channel(ivmm,60)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 5:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 6:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 7:
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(260))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
-                                            if ivmm is 8:
-                                                self.deactivate_channel(ivmm,64)
-                                                self.VMM[ivmm-1].entry_SDT.set_text(str(220))
-                                                self.VMM[ivmm-1].entry_SDT.activate()
+                                                self.deactivate_channel(ivmm,1)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(300))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 2:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(260))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 3:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 4:
+                                    #             self.deactivate_channel(ivmm,25)
+                                    #             self.deactivate_channel(ivmm,29)
+                                    #             self.deactivate_channel(ivmm,42)
+                                    #             self.deactivate_channel(ivmm,60)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 5:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 6:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 7:
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(260))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
+                                    #         if ivmm is 8:
+                                    #             self.deactivate_channel(ivmm,64)
+                                    #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
+                                    #             self.VMM[ivmm-1].entry_SDT.activate()
 
                                     # set delay counts
                                     self.SetDelayCount(delay)

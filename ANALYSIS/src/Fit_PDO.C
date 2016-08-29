@@ -151,7 +151,8 @@ int main(int argc, char* argv[]){
   fout->cd("PDO_plots");
   for(int i = 0; i < Nindex; i++){ 
     char sfold[50];
-    sprintf(sfold, "PDO_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    //sprintf(sfold, "PDO_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
     fout->mkdir(sfold);
     fout->cd(sfold);
 
@@ -169,10 +170,10 @@ int main(int argc, char* argv[]){
   fout->cd("");
 
   // write VMM_data tree to outputfile
-  TTree* newtree = tree->CloneTree();
-  fout->cd();
-  newtree->Write();
-  delete newtree;
+  //TTree* newtree = tree->CloneTree();
+  //fout->cd();
+  //newtree->Write();
+  //delete newtree;
   delete base;
   delete tree;
 

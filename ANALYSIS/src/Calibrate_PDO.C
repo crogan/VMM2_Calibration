@@ -168,11 +168,11 @@ int main(int argc, char* argv[]){
   TFile* fout = new TFile(output_name.c_str(), "RECREATE");
 
   // write VMM_data tree to outputfile
-  TChain* base_tree = new TChain("VMM_data");
-  base_tree->AddFile(inputFileName);
-  TTree* new_base_tree = base_tree->CloneTree();
-  fout->cd();
-  new_base_tree->Write();
+  //TChain* base_tree = new TChain("VMM_data");
+  //base_tree->AddFile(inputFileName);
+  //TTree* new_base_tree = base_tree->CloneTree();
+  //fout->cd();
+  //new_base_tree->Write();
 
   // add plots of PDO v DAC for each
   // MMFE8+VMM combo to output file
@@ -180,7 +180,8 @@ int main(int argc, char* argv[]){
   fout->cd("PDOfit_plots");
   for(int i = 0; i < Nindex; i++){
     char sfold[50];
-    sprintf(sfold, "PDOfit_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    //sprintf(sfold, "PDOfit_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
     fout->mkdir(sfold);
     fout->cd(sfold);
 
@@ -235,7 +236,8 @@ int main(int argc, char* argv[]){
   vector<TF1*> vfunc;
   for(int i = 0; i < Nindex; i++){
     char sfold[50];
-    sprintf(sfold, "PDOcalib_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    //sprintf(sfold, "PDOcalib_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
     fout->mkdir(sfold);
     fout->cd(sfold);
 

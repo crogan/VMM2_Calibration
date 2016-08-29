@@ -10,7 +10,7 @@ const string X_label = "Channel [1-64*8]";
 const string Y_label = "PDO";
 const string Z_label = "Count";
 
-void Plot_PDO_v_CH(const string& filename){
+void Plot_PDO_v_CH(const string& filename, int MMFE8 = -1){
   setstyle();
   
   TChain* tree = new TChain("VMM_data","VMM_data");
@@ -27,6 +27,9 @@ void Plot_PDO_v_CH(const string& filename){
 
   for(int i = 0; i < N; i++){
     base->GetEntry(i);
+
+    if(base->MMFE8 != MMFE8 && MMFE8 >= 0)
+      continue;
 
     hist->Fill(base->CHword+64*base->VMM,base->PDO);
   }
