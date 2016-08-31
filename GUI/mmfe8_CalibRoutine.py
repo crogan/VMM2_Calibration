@@ -1100,6 +1100,13 @@ class MMFE8:
                                     #             self.VMM[ivmm-1].entry_SDT.set_text(str(220))
                                     #             self.VMM[ivmm-1].entry_SDT.activate()
 
+                                    
+                                    if self.mmfeID is 103:
+                                        for ivmm in self.Cur_VMM:
+                                            if ivmm is 7:
+                                                self.deactivate_channel(ivmm,21)
+                                            if ivmm is 8:
+                                                self.deactivate_channel(ivmm,24)
                                         
                                     if self.mmfeID is 105:
                                         for ivmm in self.Cur_VMM:
