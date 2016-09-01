@@ -180,8 +180,8 @@ int main(int argc, char* argv[]){
   fout->cd("PDOfit_plots");
   for(int i = 0; i < Nindex; i++){
     char sfold[50];
-    //sprintf(sfold, "PDOfit_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
-    sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    sprintf(sfold, "PDOfit_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    //sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
     fout->mkdir(sfold);
     fout->cd(sfold);
 
@@ -236,8 +236,8 @@ int main(int argc, char* argv[]){
   vector<TF1*> vfunc;
   for(int i = 0; i < Nindex; i++){
     char sfold[50];
-    //sprintf(sfold, "PDOcalib_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
-    sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    sprintf(sfold, "PDOcalib_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    //sprintf(sfold, "Board%d_VMM%d", vMMFE8[i], vVMM[i]);
     fout->mkdir(sfold);
     fout->cd(sfold);
 

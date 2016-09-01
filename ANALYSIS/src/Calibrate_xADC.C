@@ -116,11 +116,11 @@ int main(int argc, char* argv[]){
   TFile* fout = new TFile(output_name.c_str(), "RECREATE");
 
   // write xADCBase tree to outputfile
-  TChain* base_tree = new TChain("xADC_data");
-  base_tree->AddFile(inputFileName);
-  TTree* new_base_tree = base_tree->CloneTree();
-  fout->cd();
-  new_base_tree->Write();
+  //TChain* base_tree = new TChain("xADC_data");
+  //base_tree->AddFile(inputFileName);
+  //TTree* new_base_tree = base_tree->CloneTree();
+  //fout->cd();
+  //new_base_tree->Write();
 
   // add plots of charge v DAC for each
   // MMFE8+VMM combo to output file
