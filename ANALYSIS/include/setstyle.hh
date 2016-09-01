@@ -153,27 +153,27 @@ TCanvas* Plot_Graph(string scan, TGraph* graph, string X, string Y, string title
   mg->Add(graph);
   mg->Add(gr);
 
-  // mg->Draw("ap");
-  // mg->GetXaxis()->SetTitle(X.c_str());
-  // mg->GetXaxis()->CenterTitle();
-  // mg->GetXaxis()->SetTitleOffset(1.08);
-  // mg->GetYaxis()->SetTitle(Y.c_str());
-  // mg->GetYaxis()->SetTitleOffset(1.3);
-  // mg->GetYaxis()->CenterTitle();
-  // graph->SetMarkerStyle(4);
-  // graph->SetMarkerColor(7013);
-  // graph->SetMarkerSize(3);
-  
-  graph->Draw("ap");
-  graph->GetXaxis()->SetTitle(X.c_str());
-  graph->GetXaxis()->CenterTitle();
-  graph->GetXaxis()->SetTitleOffset(1.08);
-  graph->GetYaxis()->SetTitle(Y.c_str());
-  graph->GetYaxis()->SetTitleOffset(1.3);
-  graph->GetYaxis()->CenterTitle();
+  mg->Draw("ap");
+  mg->GetXaxis()->SetTitle(X.c_str());
+  mg->GetXaxis()->CenterTitle();
+  mg->GetXaxis()->SetTitleOffset(1.08);
+  mg->GetYaxis()->SetTitle(Y.c_str());
+  mg->GetYaxis()->SetTitleOffset(1.3);
+  mg->GetYaxis()->CenterTitle();
   graph->SetMarkerStyle(4);
   graph->SetMarkerColor(7013);
   graph->SetMarkerSize(3);
+  
+  // graph->Draw("ap");
+  // graph->GetXaxis()->SetTitle(X.c_str());
+  // graph->GetXaxis()->CenterTitle();
+  // graph->GetXaxis()->SetTitleOffset(1.08);
+  // graph->GetYaxis()->SetTitle(Y.c_str());
+  // graph->GetYaxis()->SetTitleOffset(1.3);
+  // graph->GetYaxis()->CenterTitle();
+  // graph->SetMarkerStyle(4);
+  // graph->SetMarkerColor(7013);
+  // graph->SetMarkerSize(3);
   
   TLatex l;
   l.SetTextFont(132);	
