@@ -93,6 +93,7 @@ int main(int argc, char* argv[]){
 
   vector<TGraphErrors*> vgraph;
   vector<double> vsigma;
+  vector<double> vQmin;
   for(int index = 0; index < Nindex; index++){
     int Npoint = vDAC[index].size();
     double DAC[Npoint];
@@ -100,6 +101,7 @@ int main(int argc, char* argv[]){
     double meanQerr[Npoint];
     double sigma = 0.;
 
+    double Qmin = -1.;
     for(int p = 0; p < Npoint; p++){
       DAC[p] = vDAC[index][p];
       meanQ[p] = vmeanQ[index][p];
@@ -107,10 +109,14 @@ int main(int argc, char* argv[]){
       // if(meanQerr[p] > sigma)
       // 	sigma = meanQerr[p];
       sigma += meanQerr[p]/double(Npoint);
+
+      if(meanQ[p] < Qmin || Qmin < 0.)
+	Qmin = meanQ[p];
     }
 
     vgraph.push_back(new TGraphErrors(Npoint, DAC, meanQ, 0, meanQerr));
     vsigma.push_back(sigma);
+    vQmin.push_back(Qmin);
   }
 
   TFile* fout = new TFile(output_name.c_str(), "RECREATE");
@@ -182,13 +188,14 @@ int main(int argc, char* argv[]){
     vfunc.push_back(new TF1(fname, P0_P2_P1, 0., 400., 4));
 
     vfunc[ifunc]->SetParName(0, "c_{0}");
-    vfunc[ifunc]->SetParameter(0, 0.);
+    //vfunc[ifunc]->SetParameter(0, 20.);
+    vfunc[ifunc]->SetParameter(0, vQmin[index]);
     vfunc[ifunc]->SetParName(1, "A_{2}");
-    vfunc[ifunc]->SetParameter(1, 0.005);
+    vfunc[ifunc]->SetParameter(1, 0.003);
     vfunc[ifunc]->SetParName(2, "t_{0 , 2}");
-    vfunc[ifunc]->SetParameter(2, 40.);
+    vfunc[ifunc]->SetParameter(2, 50.);
     vfunc[ifunc]->SetParName(3, "d_{2 , 1}");
-    vfunc[ifunc]->SetParameter(3, 80.);
+    vfunc[ifunc]->SetParameter(3, 50.);
     
     vfunc[ifunc]->SetParLimits(3, 0., 10000.);
     
