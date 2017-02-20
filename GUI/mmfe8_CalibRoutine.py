@@ -40,6 +40,7 @@ from mmfe8_chan import channel
 from mmfe8_userRegs import userRegs
 from mmfe8_udp import udp_stuff
 from mmfe8_guiUtil import loop_pair
+import argparse
 
 
 ############################################################################
@@ -57,7 +58,10 @@ class MMFE8:
         self.stopReadOut = True
         sleep(1) # allow the threads to complete
         print "Goodbye from the MMFE8 GUI!"
-        gtk.main_quit()
+        try:
+            gtk.main_quit()
+        except:
+            sys.exit()
 
     def on_erro(self, widget, msg):
         md = gtk.MessageDialog(None,
@@ -1615,6 +1619,9 @@ class MMFE8:
     #######################################################################
 
     def __init__(self):
+
+        self.ops = options()
+
         print "loading MMFE8 Calibration Routine GUI..."
         print
         self.tv = gtk.TextView()
@@ -1870,7 +1877,14 @@ class MMFE8:
         self.combo_IP.set_active(0)
         self.combo_IP.connect("changed",self.set_board_ip, self.entry_mmfeID)
         self.combo_IP.set_size_request(200,-1)
-        self.combo_IP.set_active(3)
+        if self.ops.ip == None:
+            self.combo_IP.set_active(3)
+        else:
+            if self.ops.ip in self.ipAddr:
+                self.combo_IP.set_active(self.ipAddr.index(self.ops.ip))
+            else:
+                print "Cannot find ip=%s in list of ipAddr. Exiting." % (self.ops.ip)
+                self.destroy(None)
 
         self.combo_display = gtk.combo_box_new_text()
         for i in range(32):
@@ -1999,7 +2013,7 @@ class MMFE8:
         self.label_outputdat.set_justify(gtk.JUSTIFY_LEFT)
         self.button_outputdat = gtk.Entry()
         self.button_outputdat.set_width_chars(21)
-        self.button_outputdat.set_text("mmfe8_CalibRoutine.dat")
+        self.button_outputdat.set_text(self.ops.dat or "mmfe8_CalibRoutine.dat")
         self.button_outputdat.set_editable(True)
         #self.button_outputdat.connect("focus-out-event", self.set_outputdat_LoopCR)
         self.button_outputdat.connect("activate", self.set_outputdat_LoopCR, self.button_outputdat)
@@ -2020,7 +2034,7 @@ class MMFE8:
         self.label_outputroot.set_justify(gtk.JUSTIFY_LEFT)
         self.button_outputroot = gtk.Entry()
         self.button_outputroot.set_width_chars(21)
-        self.button_outputroot.set_text("mmfe8_CalibRoutine.root")
+        self.button_outputroot.set_text(self.ops.root or "mmfe8_CalibRoutine.root")
         self.button_outputroot.set_editable(True)
         #self.button_outputroot.connect("focus-out-event", self.set_outputroot_LoopCR)
         self.button_outputroot.connect("activate", self.set_outputroot_LoopCR, self.button_outputroot)
@@ -2041,7 +2055,7 @@ class MMFE8:
         self.label_set_pulses.set_justify(gtk.JUSTIFY_LEFT)
         self.button_set_pulses = gtk.Entry(max=3)
         self.button_set_pulses.set_width_chars(5)
-        self.button_set_pulses.set_text("100")
+        self.button_set_pulses.set_text(self.ops.pulses or "100")
         self.button_set_pulses.set_editable(True)
         #self.button_set_pulses.connect("focus-out-event", self.set_pulses_LoopCR)
         self.button_set_pulses.connect("activate", self.set_pulses_LoopCR, self.button_set_pulses)
@@ -2079,6 +2093,13 @@ class MMFE8:
         self.frame_chan = loop_pair("Channels [1-64]",self.button_fix_chan,loop_buttons)
         self.buttons_Loop.pack_start(self.frame_chan.frame,expand=True)
 
+        # CL option for all
+        if self.ops.channels == "all":
+            self.frame_chan.button_Loop.clicked()
+            self.button_loop_allchan.clicked()
+        elif self.ops.channels != None:
+            print "Havent written CL option for channel-looping yet, besides 'all'. Sorry Charlie."
+
         # fix VMM
         self.button_fix_VMM = gtk.Entry(max=1)
         self.button_fix_VMM.set_editable(True)
@@ -2101,6 +2122,13 @@ class MMFE8:
 
         self.frame_VMM = loop_pair("VMM's [1-8]",self.button_fix_VMM,loop_buttons)
         self.buttons_Loop.pack_start(self.frame_VMM.frame,expand=True)
+
+        # CL option for all
+        if self.ops.vmms == "all":
+            self.frame_VMM.button_Loop.clicked()
+            self.button_loop_all_VMM.clicked()
+        elif self.ops.vmms != None:
+            print "Havent written CL option for channel-looping yet, besides 'all'. Sorry Charlie."
 
         # fix Delay Time
         self.button_fix_delay = gtk.Entry(max=3)
@@ -2129,7 +2157,7 @@ class MMFE8:
         self.button_fix_tpDAC = gtk.Entry(max=3)
         self.button_fix_tpDAC.set_editable(True)
         self.button_fix_tpDAC.set_width_chars(6)
-        self.button_fix_tpDAC.set_text("120")
+        self.button_fix_tpDAC.set_text(self.ops.tpdac or "120")
         self.button_fix_tpDAC.connect("activate", self.fix_tpDAC, self.button_fix_tpDAC)
         self.button_fix_tpDAC.activate()
 
@@ -2147,7 +2175,7 @@ class MMFE8:
         self.button_fix_thDAC = gtk.Entry(max=3)
         self.button_fix_thDAC.set_editable(True)
         self.button_fix_thDAC.set_width_chars(6)
-        self.button_fix_thDAC.set_text("220")
+        self.button_fix_thDAC.set_text(self.ops.thdac or "220")
         self.button_fix_thDAC.connect("activate", self.fix_thDAC, self.button_fix_thDAC)
         self.button_fix_thDAC.activate()
 
@@ -2418,11 +2446,32 @@ class MMFE8:
 
         #print "Put it out there..."
 
+        # batch?
+        if self.ops.batch:
+            # self.button_RunCR.clicked()
+            self.destroy(None)
+
 ############################__INIT__################################
 ############################__INIT__################################
 
     def main(self):
         gtk.main()
+
+
+# command line options
+def options():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip",       default=None,        help="IP address")
+    parser.add_argument("--thdac",    default=None,        help="Threshold DAC")
+    parser.add_argument("--tpdac",    default=None,        help="Test pulse DAC")
+    parser.add_argument("--dat",      default=None,        help="Output dat file")
+    parser.add_argument("--root",     default=None,        help="Output ROOT file")
+    parser.add_argument("--pulses",   default=None,        help="Number of pulses")
+    parser.add_argument("--channels", default=None,        help="Channels for looping. Only have 'all' implemented right now.")
+    parser.add_argument("--vmms",     default=None,        help="VMMs for looping. Only have 'all' implemented right now.")
+    parser.add_argument("--batch",    action="store_true", help="Run the calibration without pressing any buttons.")
+    return parser.parse_args()
+
 
 ############################################################
 ############################################################
