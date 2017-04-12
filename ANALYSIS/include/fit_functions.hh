@@ -68,4 +68,17 @@ double P1(double* xs, double* par){
   return m*x+c;
 }
 
+double TurnOn(double* xs, double* par){
+  double x = xs[0];
+
+  double a = par[0];
+  double b = par[1];
+  double C = par[2];
+
+  if(x > a && x < a+b)
+    return C;
+  else
+    return 0;
+}
+
 #endif

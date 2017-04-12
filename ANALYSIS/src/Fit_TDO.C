@@ -130,13 +130,14 @@ int main(int argc, char* argv[]){
       TH1D* hist = new TH1D(("h_"+string(shist_all)).c_str(),
 			    ("h_"+string(shist_all)).c_str(),
 			    4096, -0.5, 4095.5);
+      hist->Sumw2();
       vhist_all[index].push_back(hist);
     }
 
     // CH index
     int cindex = vCH_to_index[index][CH];
 
-    vhist_all[index][cindex]->Fill(base->TDO);
+    //vhist_all[index][cindex]->Fill(base->TDO);
 
     if(base->TPDAC > vCH_to_maxDAC[index][CH])
       vCH_to_maxDAC[index][CH] = base->TPDAC;
@@ -169,8 +170,10 @@ int main(int argc, char* argv[]){
     // take only max DAC
     // if(base->TPDAC != 200)
     //   continue;
-    if(base->TPDAC != vCH_to_maxDAC[index][CH])
+    if(base->TPDAC != vCH_to_maxDAC[index][CH]){
+      vhist_all[index][cindex]->Fill(base->TDO);
       continue;
+    }
 
     // add a new histogram if this Delay
     // combination is new for the MMFE8+VMM+CH combo
@@ -194,36 +197,6 @@ int main(int argc, char* argv[]){
   int Nindex = vMMFE8.size();
 
   TFile* fout = new TFile(output_name.c_str(), "RECREATE");
-
-  // add plots of TDO values for each
-  // MMFE8+VMM+CH combo to output file
-  fout->mkdir("TDO_plots");
-  fout->cd("TDO_plots");
-  cout << "Drawing Histograms" << endl;
-  for(int i = 0; i < Nindex; i++){ 
-    char sfold[50];
-    sprintf(sfold, "TDO_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
-    fout->mkdir(sfold);
-    fout->cd(sfold);
-
-    int Ncindex = vCH[i].size();
-    for(int c = 0; c < Ncindex; c++){
-      char stitle[50];
-      sprintf(stitle, "Board #%d, VMM #%d , CH #%d", vMMFE8[i], vVMM[i], vCH[i][c]);
-      if(vhist[i][c].size() > 0){
-	char scan[50];
-	sprintf(scan, "c_TDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
-	TCanvas* can = Plot_1D(scan, vhist[i][c], "TDO", "Count", stitle, vlabel[i][c]);
-	can->Write();
-	delete can;
-      }
-      char scan_all[100];
-      sprintf(scan_all, "c_allTDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
-      TCanvas* can_all = Plot_1D(scan_all, vhist_all[i][c], "TDO", "Count", stitle);
-      can_all->Write();
-      delete can_all;
-    }
-  }
   fout->cd("");
 
   // write VMM_data tree to outputfile
@@ -264,7 +237,9 @@ int main(int argc, char* argv[]){
 
   cout << "Extracting TDO values" << endl;
 
-  // currently, no fit performed extracting TDO values
+  // min and max TDO (TDO window for each channel) calculated from simple fit
+  
+  vector<TF1*> vfunc;
   for(int i = 0; i < Nindex; i++){
     fit_MMFE8 = vMMFE8[i];
     fit_VMM = vVMM[i];
@@ -276,17 +251,38 @@ int main(int argc, char* argv[]){
 
       fit_minTDO = 0; 
       fit_maxTDO = 4000;
+
+      /*
+      char fname[50];
+      sprintf(fname, "funcTurnOn_MMFE8-%d_VMM-%d_CH-%d", 
+  	      vMMFE8[i], vVMM[i], vCH[i][c]);
+      
+      int ifunc = vfunc.size();
+      vfunc.push_back(new TF1(fname, TurnOn, 0., 2000., 3));
+      
+      vfunc[ifunc]->SetParName(0, "a");
+      vfunc[ifunc]->SetParName(1, "b");
+      vfunc[ifunc]->SetParName(2, "C");
+      vfunc[ifunc]->SetParameter(0, 10.);
+      vfunc[ifunc]->SetParameter(1, 150.);
+      vfunc[ifunc]->SetParameter(2, 20.);
+      
+      vhist_all[i][c]->Fit(fname, "");
+      fit_minTDO = vfunc[ifunc]->GetParameter(0);
+      fit_maxTDO = vfunc[ifunc]->GetParameter(1);
+      */
+
       for(int b = 1; b < 4000; b++){
-	if(vhist_all[i][c]->GetBinContent(b) > 0){
-	  fit_minTDO = b-1;
-	  break;
-	}
+      	if(vhist_all[i][c]->GetBinContent(b) > 0){
+      	  fit_minTDO = b-1;
+      	  break;
+      	}
       }
       for(int b = 4000; b >= 1; b--){
-	if(vhist_all[i][c]->GetBinContent(b) > 0){
-	  fit_maxTDO = b-1;
-	  break;
-	}
+      	if(vhist_all[i][c]->GetBinContent(b) > 0){
+      	  fit_maxTDO = b-1;
+      	  break;
+      	}
       }
 
       int Ndelay = vDelay[i][c].size();
@@ -302,6 +298,36 @@ int main(int argc, char* argv[]){
 	
 	fit_tree->Fill();
       }
+    }
+  }
+
+  // add plots of TDO values for each
+  // MMFE8+VMM+CH combo to output file
+  fout->mkdir("TDO_plots");
+  fout->cd("TDO_plots");
+  cout << "Drawing Histograms" << endl;
+  for(int i = 0; i < Nindex; i++){ 
+    char sfold[50];
+    sprintf(sfold, "TDO_plots/Board%d_VMM%d", vMMFE8[i], vVMM[i]);
+    fout->mkdir(sfold);
+    fout->cd(sfold);
+
+    int Ncindex = vCH[i].size();
+    for(int c = 0; c < Ncindex; c++){
+      char stitle[50];
+      sprintf(stitle, "Board #%d, VMM #%d , CH #%d", vMMFE8[i], vVMM[i], vCH[i][c]);
+      if(vhist[i][c].size() > 0){
+	char scan[50];
+	sprintf(scan, "c_TDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
+	TCanvas* can = Plot_1D(scan, vhist[i][c], "TDO", "Count", stitle, vlabel[i][c]);
+	can->Write();
+	delete can;
+      }
+      char scan_all[100];
+      sprintf(scan_all, "c_allTDO_Board%d_VMM%d_CH%d", vMMFE8[i], vVMM[i], vCH[i][c]);
+      TCanvas* can_all = Plot_1D(scan_all, vhist_all[i][c], "TDO", "Count", stitle);
+      can_all->Write();
+      delete can_all;
     }
   }
 
