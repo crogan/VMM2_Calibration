@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
 
     // exclude cases where TDO is split 
     // between low/high due to BCID jump
-    if(base->sigmaTDO > 3.5)
+    if(base->sigmaTDO > 3.)
       continue;
 
     MMFE8 = base->MMFE8;
