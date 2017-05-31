@@ -6,10 +6,10 @@ Run like:
 
 """
 
-import argparse
+import argparse, time
 import os, sys, ROOT
 
-thr = 30
+thr = [100,100]
 
 def main():
 
@@ -21,66 +21,99 @@ def main():
     if not os.path.isfile(ops.n):
         fatal("The -n file does not exist")
 
-    f1 = ROOT.TFile(ops.o)
-    f2 = ROOT.TFile(ops.n)
-    tr1 = f1.Get("VMM_data")
-    tr2 = f2.Get("VMM_data")
+    dt = [1, 1] # data type default MM_data, 0 = calib, 2 = TPfit_data
+        
+    f = [ROOT.TFile(ops.o),ROOT.TFile(ops.n)]
+    tr = [f[i].Get("VMM_data") or f[i].Get("MM_data") or f[i].Get("TPfit_data") for i in range(len(f))]
 
-    if not tr1 or not tr2:
-        fatal("Files don't have VMM_data")
+    if not all(itr for itr in tr):
+        fatal("Files don't have VMM_data, MM_data, or TPfit_data")
 
-    ents1 = tr1.GetEntries()
-    ents2 = tr2.GetEntries()
-
+    ents = [-1, -1]
+    
+    for i, itr in enumerate(tr):
+        if "tp" in itr.GetName().lower():
+            dt[i] = 2
+        elif "vmm" in itr.GetName().lower():
+            dt[i] = 0
+            thr[i] = 10
+        ents[i] = itr.GetEntries()
+        
     print
     print "ROOT file 1 : %s" %(ops.o)
     print "ROOT file 2 : %s" %(ops.n)
     print
 
-    hits1 = {}
-    hits2 = {}
-    for e in xrange(ents1):
-        _ = tr1.GetEntry(e)
-        mmfe, vmm, chw, chp = (tr1.MMFE8, tr1.VMM, tr1.CHword, tr1.CHpulse)
-        if (mmfe, vmm, chw) in hits1:
-            hits1[mmfe, vmm, chw] += 1
+    hits = [{},{}]
+
+    for i in range(len(hits)):
+        if ops.prog:
+            print 
+            print "Processing file %i" %(i)
+            print
+        start_time = time.time()
+        for e in xrange(ents[i]):
+            if e % 1000 == 0 and e > 0 and ops.prog:
+                pbftp(time.time() - start_time, e, ents[i])
+            #if e > 200000 and dt[i] != 0:
+            #    break
+            _ = tr[i].GetEntry(e)
+            if (dt[i] != 0):
+                nhits = len(tr[i].tpfit_CH) if dt[i] == 2 else len(tr[i].mm_CH)
+                for ih in xrange(nhits):
+                    mmfe, vmm, ch = (tr[i].tpfit_MMFE8[ih], tr[i].tpfit_VMM[ih], tr[i].tpfit_CH[ih]) if dt[i] == 2 else \
+                                    (tr[i].mm_MMFE8[ih], tr[i].mm_VMM[ih], tr[i].mm_CH[ih])
+                    if (mmfe, vmm, ch) in hits[i]:
+                        hits[i][mmfe, vmm, ch] += 1
+                    else:
+                        hits[i][mmfe, vmm, ch] = 1
+
+            else:
+                mmfe, vmm, chw, chp = (tr[i].MMFE8, tr[i].VMM, tr[i].CHword, tr[i].CHpulse)
+                if (mmfe, vmm, chw) in hits[i]:
+                    hits[i][mmfe, vmm, chw] += 1
+                else:
+                    hits[i][mmfe, vmm, chw] = 1
+        print
+
+    active = []
+    for i in range(len(hits)): 
+        act = [key for key in hits[i] if hits[i][key] > thr[i]]
+        active.append(act)
+
+    og_ch = {}
+    boards = []
+    for (mmfe, vmm, chw) in hits[0]:
+        boards.append(mmfe)
+        if (mmfe,vmm) in og_ch:
+            og_ch[mmfe,vmm] += 1
         else:
-            hits1[mmfe, vmm, chw] = 1
-    for e in xrange(ents2):
-        _ = tr2.GetEntry(e)
-        mmfe, vmm, chw, chp = (tr2.MMFE8, tr2.VMM, tr2.CHword, tr2.CHpulse)
-        if (mmfe, vmm, chw) in hits2:
-            hits2[mmfe, vmm, chw] += 1
-        else:
-            hits2[mmfe, vmm, chw] = 1
+            og_ch[mmfe,vmm] = 1
 
-    active1 = [key for key in hits1 if hits1[key] > thr]
+    ubds = sorted(list(set(boards)))
+    diffs = list(set(active[0]).difference(set(active[1])))
 
-    og_ch = dict(enumerate([0]*8)) #original number of channels
-    board = -1
-    for (mmfe, vmm, chw) in hits1:
-        board = mmfe
-        og_ch[vmm] += 1
-    
-    active2 = [key for key in hits2 if hits2[key] > thr]
-
-    diffs = list(set(active1).difference(set(active2)))
-
-    channels = {0:[],1:[],2:[],3:[],4:[],5:[],6:[],7:[]}
-    
-    for (mmfe, vmm, chw) in sorted(diffs):
-        channels[vmm].append(chw)
-    if (ops.c):
-        print color.blue + "BOARD %i" %(board) + color.end
-    else:
-        print "BOARD %i" %(board)
-    print
-    for vmm in channels:
+    for ib in ubds:
+        channels = {0:[],1:[],2:[],3:[],4:[],5:[],6:[],7:[]}
+        for (mmfe, vmm, chw) in sorted(diffs):
+            if mmfe != ib:
+                continue
+            channels[vmm].append(chw)
+        print 
         if (ops.c):
-            print color.pink + "%i" %(vmm) + color.end + color.gray +  " (%i)" %(og_ch[vmm]) + color.end +" : %s" %(channels[vmm])
+            print color.blue + "BOARD %i" %(ib) + color.end
         else:
-            print "%i" %(vmm) + " (%i)" %(og_ch[vmm]) + " : %s" %(channels[vmm])
-    print 
+            print "BOARD %i" %(board)
+        print
+        for vmm in channels:
+            if (ops.c):
+                if (ib,vmm) in og_ch:
+                    print color.pink + "%i" %(vmm) + color.end + color.gray +  " (%i)" %(og_ch[ib,vmm]) + color.end +" : %s" %(channels[vmm])
+                else:
+                    print color.pink + "%i" %(vmm) + color.end + color.gray +  " (XX)" + color.end +" : %s" %(channels[vmm])
+            else:
+                print "%i" %(vmm) + " (%i)" %(og_ch[vmm]) + " : %s" %(channels[vmm])
+        print 
 
 class color:
     
@@ -91,11 +124,21 @@ class color:
     end = "\033[0m"
     warning = "\033[38;5;227;48;5;232m"
 
+
+def pbftp(time_diff, nprocessed, ntotal):
+    nprocessed, ntotal = float(nprocessed), float(ntotal)
+    rate = (nprocessed+1)/time_diff
+    msg = "\r > %6i / %6i | %2i%% | %8.2fHz | %6.1fm elapsed | %6.1fm remaining"
+    msg = msg % (nprocessed, ntotal, 100*nprocessed/ntotal, rate, time_diff/60, (ntotal-nprocessed)/(rate*60))
+    sys.stdout.write(msg)
+    sys.stdout.flush()
+
 def options():
     parser = argparse.ArgumentParser(usage=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-o", default=None, help= "Old calibration ROOT file")
     parser.add_argument("-n", default=None, help= "New calibration ROOT file")
     parser.add_argument("-c", default=False, action="store_true", help= "colors")
+    parser.add_argument("--prog", default=False, action="store_true", help= "progress bar")
     return parser.parse_args()
 
 def fatal(msg):
