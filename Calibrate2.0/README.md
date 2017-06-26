@@ -16,18 +16,18 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 `TDO_PDO_calibration_scripts/` - This folder contains two helper scripts and three scripts which run Jonah's TDO calibration algorithm. The TDO calibration scripts are `Fit_TDO.py`, `Calibrate_TDO.py`, and `TDO_dat_to_root.py`. The first helper script is `PDOroot_to_PDOdat.py`. This script takes PDO calibration .root files to the .dat format Paulo likes. The second helper is `plot_TDO.py`. `plot_TDO.py` is a template script for plotting TDO calibrations. In its current configuration, it searches through calibration data, identifies channels with high sigma, then displays the TDO calibration the algorithm found for those channels.
 
 ## Example Usage
-1. Make Chris's calibration code:\n 
-`cd ANALYSIS`
-`make`
-2. cd to Calibration2.0 and make a directory to store new calibration data: 
-`cd ../Calibration2.0` 
-`mkdir first_calibrate` 
-3. Calibrate PDO: 
-`python manager.py PDO first_calibrate/board102_PDO_calib ../DATA/xADC_Jun9/board102_bench_xADC.root ../DATA/PDO_Jun9/board102_bench_PDO.root`
-4. Calibrate TDO: 
-`python manager.py TDO first_calibrate/board102_TDO_calib ../DATA/TDO_Jun9/board102_bench_TDO.root`
-5. Check the outlier TDO calibrations: 
-`python TDO_PDO_calibration_scripts/plot_TDO.py first_calibrate/board102_TDO_calib`
+1. Make Chris's calibration code:   
+`cd ANALYSIS`  
+`make`  
+2. cd to Calibration2.0 and make a directory to store new calibration data:   
+`cd ../Calibration2.0`  
+`mkdir first_calibrate`  
+3. Calibrate PDO:  
+`python manager.py PDO first_calibrate/board102_PDO_calib ../DATA/xADC_Jun9/board102_bench_xADC.root ../DATA/PDO_Jun9/board102_bench_PDO.root`  
+4. Calibrate TDO:   
+`python manager.py TDO first_calibrate/board102_TDO_calib ../DATA/TDO_Jun9/board102_bench_TDO.root`  
+5. Check the outlier TDO calibrations:  
+`python TDO_PDO_calibration_scripts/plot_TDO.py first_calibrate/board102_TDO_calib`  
 
 ## Requirements and Notes
 1. PDO calibration takes 1 minute / board. TDO calibration takes about 15 minutes / board .
