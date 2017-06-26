@@ -25,7 +25,6 @@ parser.add_argument("output_file_name", help="""Send results to output_file_name
 parser.add_argument("input_file", help="""If "command" is TDO, then "input_file" must be
                 a .root file made by the TDO Calibration GUI. If "command" is PDO, then "input_file" must be
                 a .root file made by the xADC Calibration GUI, then a .root file made by the PDO Calibration GUI.""", nargs="+")
-#parser.add_argument("-c", help=""" run version 1.0 TDO calibration """, action="store_true")
 
 args = parser.parse_args()
 
@@ -35,14 +34,6 @@ if args.command == 'TDO':
     assert(len(sys.argv) == 4), """Improper number of arguments for TDO calibration. To get some guidance, type "python manager.py -h" for help or "head manager.py" for examples"""
     assert(sys.argv[-1][-5:] == '.root'), """Incorrect file type for TDO calibration. Type "python manager.py -h" for help or "head manager.py" for examples"""
 
-    # if args.c:
-    #     command = '../ANALYSIS/Fit_TDO ' + sys.argv[-1] + ' -o ephem_TDO_f.root'
-    #     subprocess.call(command, shell=True)
-    #     command = '../ANALYSIS/Calibrate_TDO ephem_TDO_f.root -o ' + sys.argv[-2] + '.root'
-    #     subprocess.call(command, shell=True)
-    #     os.remove('ephem_TDO_f.root')
-
-    #else:
     command = 'python TDO_PDO_calibration_scripts/Fit_TDO.py ' + sys.argv[-1] + ' ' + sys.argv[2] + '.p'
     subprocess.call(command, shell=True)
     board_num_dict = pickle.load( open(sys.argv[2] + '_boardnum.p' , "rb" ) )
@@ -52,7 +43,6 @@ if args.command == 'TDO':
     subprocess.call(command, shell=True)
     command = 'python TDO_PDO_calibration_scripts/TDO_dat_to_root.py ' + sys.argv[2] + '.dat'
     subprocess.call(command, shell=True)
-    #os.remove(sys.argv[2] + '.p')
 
 
 if args.command == 'PDO':
