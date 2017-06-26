@@ -15,7 +15,7 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 - `run_scripts.py` - An example of how to automate the procedure of running manager.py on several bench files (useful if you ever need to calibrate every board using every board's most recent bench data).
 
 - `TDO_PDO_calibration_scripts/` - This folder contains two helper scripts and three scripts which run the new TDO calibration algorithm.  
-  * The TDO calibration scripts are `Fit_TDO.py`, `Calibrate_TDO.py`, and `TDO_dat_to_root.py`. `Fit_TDO.py` preprocesses the information from bench data to get ready for tensorflow, `Calibrate_TDO.py` runs the calibration algorithm, and finally `TDO_dat_to_root.py` writes the results from the algorithm in .root format.
+  * The TDO calibration scripts are `Fit_TDO.py`, `Calibrate_TDO.py`, and `TDO_dat_to_root.py`. `Fit_TDO.py` preprocesses the information from bench data to get ready for tensorflow, `Calibrate_TDO.py` runs machine learning on that data, and finally `TDO_dat_to_root.py` writes the results from the algorithm in .root format.
   * The first helper script is `PDOroot_to_PDOdat.py`. This script translates PDO calibration .root files to the .dat format Paulo likes. 
   * The second helper is `plot_TDO.py`. `plot_TDO.py` is a template script for plotting TDO calibrations. In its current configuration, it searches through calibration data, identifies channels with high sigma, then displays the TDO calibration the algorithm found for those channels.
 
