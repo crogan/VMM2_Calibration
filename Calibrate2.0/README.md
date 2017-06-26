@@ -1,5 +1,5 @@
 # Calibration 2.0 #
-An updated TDO calibration algorithm + some calibration helper scripts
+MMFE8 PDO/TDO calibration with an updated TDO calibration algorithm
 
 
 ## Motivation
