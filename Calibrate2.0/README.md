@@ -53,12 +53,12 @@ Content Cell  | Content Cell
 |Pedestal |TDO = time (ns) * Gain + Pedestal. Units: TDO counts                   |
 |m        |Slope of fitted fitted sawtooth wave. Units: (TDO counts)/(Delay index)             |
 |b        |Y-intercept of fitted sawtooth wave. Units: TDO counts                                 |
-|floor    |The lower bound on TDO for this channel, AKA the TDO counts for 25/2 ns                |
-|n_samps  |The number of data points that were fitted                                             |
-|p_8      |The fraction of TDO on this channel which were a multiple of 8.This variable should hopefully lead to a better understanding of the mysterious VMM Lower Bit Issue.|
-|sigma    |Standard error for time prediction from this channel. Noisy channels will have high sigma.|
+|floor    |The lower bound on TDO for this channel, AKA the TDO counts corresponding to 25/2 ns                |
+|n_samps  |The number of data points available during training                                            |
+|p_8      |The fraction of TDO on this channel which were a multiple of 8. This variable will hopefully lead us to a better understanding of the mysterious VMM Lower Bit Issue.|
+|sigma    |Standard error for time prediction TDO = m*Delay + b on this channel. Noisy channels will have high sigma.|
 |chi2     |Sum of squared differences. Included for compatibility with crogan's TDO_to_time function.                  |
-|prob     |Probability of fit given above chi2. Not meaningful since we don't know the actual variance in our data.|
+|prob     |Probability of fit given above chi2. Not meaningful since we don't know the actual variance in our data. Included for compatibility with crogan's TDO_to_time function.|
 |delta_b  |Standard error on the calibration value found for b                                    |
 |delta_m  |Standard error on the calibration value found for m                                    |
 |delta_f  |A value proportional to the standard error on the calibration value found for floor    |
