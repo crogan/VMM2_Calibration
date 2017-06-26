@@ -44,8 +44,8 @@ First Header  | Second Header
 Content Cell  | Content Cell  
 Content Cell  | Content Cell  
 
-
-|----------|--------------------------------------------------------------------------------------:|
+| Variable | Description |
+|----------|---------------------------------------------------------------------------------------|
 |MMFE8:    |last three digits of the board's IP Address                                            |
 |VMM:      |VMM index, 0-indexed                                                                   |
 |CH:       |channel index, 1-indexed                                                               |
