@@ -7,9 +7,7 @@ Say you have calibration data for several MMFE8s and you
 want to extract the calibration coefficients for every channel on every VMM on every board. This folder contains code which streamlines that procedure. 
 
 These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO calibration algorithm. All scripts in this folder include guidance on how to use them that can be accessed via 
-<p align="center"> 
-    `python script.py -h`
-</p>
+`python script.py -h`
 
 ## Scripts
 - `manager.py` - This script runs the PDO and TDO calibration algorithms. For instance, the command `python manager.py TDO TDO_output_direc/new_calib TDO_bench_data.root` will calibrate the channels in TDO_bench_data.root using Jonah's TDO algorithm, then store the results in TDO_output_direc/new_calib.root and TDO_output_direc/new_calib.dat. Similarly, `python manager.py PDO PDO_output_direc/new_calib xADC_bench_data.root PDO_bench_data.root` will calibrate the channels in `xADC_bench_data.root` and `PDO_bench_data.root` then store the results in `PDO_output_direc/new_calib.root` and `PDO_output_direc/new_calib.dat`. The .dat and .root output files store the same information but in different formats.
