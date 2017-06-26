@@ -3,7 +3,7 @@ __MMFE8 PDO/TDO calibration with an updated TDO calibration algorithm__
 
 
 ## Motivation
-Say you have a bunch of .root files created by the calibration GUI and you 
+Say you have calibration data for several MMFE8s and you 
 want to extract the calibration coefficients for every channel on every VMM on every board. This folder contains code which streamlines that process. 
 
 These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO calibration algorithm. All scripts in this folder include guidance on how to use them that can be accessed via `python script.py -h`
