@@ -1,6 +1,6 @@
 <snippet>
   <content><![CDATA[
-# ${1:Calibration 2.0}
+# Calibration 2.0
 An updated TDO calibration algorithm with helper scripts
 
 
