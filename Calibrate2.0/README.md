@@ -19,12 +19,12 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 1. Make Chris's calibration code:   
 `cd ANALYSIS`  
 `make`  
-2. cd to Calibration2.0 and make a directory to store new calibration data:   
+2. cd to Calibration2.0 and make a directory to house the new calibration data we're about to create:   
 `cd ../Calibration2.0`  
 `mkdir first_calibrate`  
-3. Calibrate PDO:  
+3. Calibrate PDO (one command):  
 `python manager.py PDO first_calibrate/board102_PDO_calib ../DATA/xADC_Jun9/board102_bench_xADC.root ../DATA/PDO_Jun9/board102_bench_PDO.root`  
-4. Calibrate TDO:   
+4. Calibrate TDO (one command):   
 `python manager.py TDO first_calibrate/board102_TDO_calib ../DATA/TDO_Jun9/board102_bench_TDO.root`  
 5. Check the outlier TDO calibrations:  
 `python TDO_PDO_calibration_scripts/plot_TDO.py first_calibrate/board102_TDO_calib`  
@@ -32,7 +32,7 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 ## Requirements and Notes
 1. PDO calibration takes 1 minute / board. TDO calibration takes about 15 minutes / board .
 2. manager.py probably only works on OS X. 
-3. Your system's default python needs access to the `tensorflow` and `rootpy` packages. Both packages can be installed with pip. You also need `tqdm`! `tqdm` is a great package which displays progress bars. I include a progress bar in the Calibrate_TDO.py script since it takes so long.
+3. Your system's default python needs access to the `tensorflow` and `rootpy` packages. Both packages can be installed with pip. You also need `tqdm`! `tqdm` is a great package which displays progress bars. I include a progress bar in the Calibrate_TDO.py script since the TDO algorithm takes so long.
 4. The directory from which you run manager.py cannot have any files that start with 'ephem' in it. The reason is that a few "ephemeral" files are made during TDO and PDO calibration and they all start with "ephem". manager.py includes an assertion error to check for these cases.
 
 
