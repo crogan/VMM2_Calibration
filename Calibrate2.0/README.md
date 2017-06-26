@@ -37,7 +37,7 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 2. manager.py probably only works on OS X. 
 3. Your system's default python needs access to the `tensorflow` and `rootpy` packages. Both packages can be installed with pip. You also need `tqdm`! `tqdm` is a great package which displays progress bars. I include a progress bar in the Calibrate_TDO.py script since the TDO algorithm takes so long.
 4. The directory from which you run manager.py cannot have any files that start with 'ephem' in it. The reason is that a few "ephemeral" files are made during TDO and PDO calibration and they all start with "ephem". manager.py includes an assertion error to check for these cases.
-5. Although the older TDO calibration scripts were able to operate on the hadd of several boards, the new TDO calibration algorithm can only operate on one board's bench file at a time. Do not `hadd` before feeding to manager.py. However, you should definitely `hadd` all of outputs of manager.py once you've ran it on every board individually. 
+5. Although the older TDO calibration scripts were able to operate on the `hadd` of several boards, __the new TDO calibration algorithm can only operate on one board's bench file at a time__. Do not `hadd` before feeding to manager.py. However, you should definitely `hadd` all of outputs of manager.py once you've ran it on every board individually. 
 6. Definitions for the variables output by the new TDO calibration algorithm are below:  
 
 | Variable | Description |
