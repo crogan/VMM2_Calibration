@@ -65,5 +65,5 @@ Content Cell  | Content Cell
 
 ---
 
-Hopefully this all works!  
+Hopefully this works!  
 -Jonah
