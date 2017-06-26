@@ -46,22 +46,22 @@ Content Cell  | Content Cell
 
 | Variable | Description |
 |:---------|:--------------------------------------------------------------------------------------|
-|MMFE8:    |last three digits of the board's IP Address                                            |
-|VMM:      |VMM index, 0-indexed                                                                   |
-|CH:       |channel index, 1-indexed                                                               |
-|Gain:     |TDO = time (ns) * Gain + Pedestal. Gain has units (TDO counts)/ns                      |
-|Pedestal: |TDO = time (ns) * Gain + Pedestal. Pedestal has units (TDO counts)                     |
-|m:        |slope of fitted fitted sawtooth wave. Has units (TDO counts)/(Delay index)             |
-|b:        |y-intercept of fitted sawtooth wave. Units: TDO counts                                 |
-|floor:    |the lower bound on TDO for this channel, AKA the TDO counts for 25/2 ns                |
-|n_samps:  |the number of data points that were fitted                                             |
-|p_8:      |the fraction of TDO on this channel which were a multiple of 8.This variable should hopefully lead to a better understanding of the mysterious VMM Lower Bit Issue.|
-|sigma:    |standard error for time prediction from this channel. Noisy channels will have high sigma.|
-|chi2:     |sum of squared differences. Included for compatibility with crogan's TDO_to_time function.                  |
-|prob:     |probability of fit given above chi2. Not meaningful since we don't know the actual variance in our data.|
-|delta_b:  |standard error on the calibration value found for b                                    |
-|delta_m:  |standard error on the calibration value found for m                                    |
-|delta_f:  |a value proportional to the standard error on the calibration value found for floor    |
+|MMFE8    |Last three digits of the MMFE8's IP Address                                            |
+|VMM      |VMM number, 0-indexed                                                                   |
+|CH       |Channel number, 1-indexed                                                               |
+|Gain     |TDO = time (ns) * Gain + Pedestal. Units: (TDO counts)/ns                      |
+|Pedestal |TDO = time (ns) * Gain + Pedestal. Units: TDO counts                   |
+|m        |Slope of fitted fitted sawtooth wave. Units: (TDO counts)/(Delay index)             |
+|b        |Y-intercept of fitted sawtooth wave. Units: TDO counts                                 |
+|floor    |The lower bound on TDO for this channel, AKA the TDO counts for 25/2 ns                |
+|n_samps  |The number of data points that were fitted                                             |
+|p_8      |The fraction of TDO on this channel which were a multiple of 8.This variable should hopefully lead to a better understanding of the mysterious VMM Lower Bit Issue.|
+|sigma    |Standard error for time prediction from this channel. Noisy channels will have high sigma.|
+|chi2     |Sum of squared differences. Included for compatibility with crogan's TDO_to_time function.                  |
+|prob     |Probability of fit given above chi2. Not meaningful since we don't know the actual variance in our data.|
+|delta_b  |Standard error on the calibration value found for b                                    |
+|delta_m  |Standard error on the calibration value found for m                                    |
+|delta_f  |A value proportional to the standard error on the calibration value found for floor    |
 
 ---
 
