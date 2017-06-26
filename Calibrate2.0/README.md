@@ -39,11 +39,6 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 4. The directory from which you run manager.py cannot have any files that start with 'ephem' in it. The reason is that a few "ephemeral" files are made during TDO and PDO calibration and they all start with "ephem". manager.py includes an assertion error to check for these cases.
 5. Definitions for the variables output by the new TDO calibration are below:  
 
-First Header  | Second Header 
-------------- | ------------- 
-Content Cell  | Content Cell  
-Content Cell  | Content Cell  
-
 | Variable | Description |
 |:---------|:--------------------------------------------------------------------------------------|
 |MMFE8    |Last three digits of the MMFE8's IP Address                                            |
