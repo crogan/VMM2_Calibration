@@ -34,6 +34,28 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 2. manager.py probably only works on OS X. 
 3. Your system's default python needs access to the `tensorflow` and `rootpy` packages. Both packages can be installed with pip. You also need `tqdm`! `tqdm` is a great package which displays progress bars. I include a progress bar in the Calibrate_TDO.py script since the TDO algorithm takes so long.
 4. The directory from which you run manager.py cannot have any files that start with 'ephem' in it. The reason is that a few "ephemeral" files are made during TDO and PDO calibration and they all start with "ephem". manager.py includes an assertion error to check for these cases.
+5. Definitions for the variables output by the new TDO calibration are below:
 
+    MMFE8:    last three digits of the board's IP Address
+    VMM:      VMM index, 0-indexed
+    CH:       channel index, 1-indexed
+    Gain:     TDO = time (ns) * Gain + Pedestal. Gain has units (TDO counts)/ns
+    Pedestal: TDO = time (ns) * Gain + Pedestal. Pedestal has units (TDO counts)
+    m:        slope of fitted fitted sawtooth wave. Has units (TDO counts)/(Delay index)
+    b:        y-intercept of fitted sawtooth wave. Units: TDO counts
+    floor:    the lower bound on TDO for this channel, AKA the TDO counts for 25/2 ns
+    n_samps:  the number of data points that were fitted
+    p_8:      the fraction of TDO on this channel which were a multiple of 8. 
+              This variable should hopefully lead to a better understanding of
+              the mysterious VMM Lower Bit Issue.
+    sigma:    standard error for time prediction from this channel. Noisy channels
+              will have high sigma.
+    chi2:     sum of variance. Included to make crogan's TDO_to_time function work.
+    prob:     probability of fit given above chi2. Not meaningful since we don't know
+              the actual variance in our data.
+    delta_b:  standard error on the calibration value found for b
+    delta_m:  standard error on the calibration value found for m
+    delta_f:  a value proportional to the standard error on the calibration value found for floor
 
+Hopefully this all works
 -Jonah
