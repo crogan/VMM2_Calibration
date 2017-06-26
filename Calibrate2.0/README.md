@@ -57,7 +57,7 @@ Content Cell  | Content Cell
 |n_samps:  |the number of data points that were fitted                                             |
 |p_8:      |the fraction of TDO on this channel which were a multiple of 8.This variable should hopefully lead to a better understanding of the mysterious VMM Lower Bit Issue.|
 |sigma:    |standard error for time prediction from this channel. Noisy channels will have high sigma.|
-|chi2:     |sum of squared differences. Included to make crogan's TDO_to_time function work.                  |
+|chi2:     |sum of squared differences. Included for compatibility with crogan's TDO_to_time function.                  |
 |prob:     |probability of fit given above chi2. Not meaningful since we don't know the actual variance in our data.|
 |delta_b:  |standard error on the calibration value found for b                                    |
 |delta_m:  |standard error on the calibration value found for m                                    |
