@@ -1,12 +1,12 @@
 # Calibration 2.0 #
-An updated TDO calibration algorithm + some helper scripts
+An updated TDO calibration algorithm + some calibration helper scripts
 
 
 ## Motivation
 Say you have a bunch of .root files created by the calibration GUI and you 
 want to extract the calibration coefficients for every channel on every VMM on every board. This folder contains code which streamlines that process. 
 
-These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO calibration algorithm. All scripts in this folder have instructions which can be accessed via `python script.py -h`
+These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO calibration algorithm. All scripts in this folder include guidance on how to use them that can be accessed via `python script.py -h`
 
 ## Scripts
 `manager.py` - This script runs the PDO and TDO calibration algorithms. For instance, the command `python manager.py TDO TDO_output_direc/new_calib TDO_bench_data.root` will calibrate the channels in TDO_bench_data.root using Jonah's TDO algorithm, then store the results in TDO_output_direc/new_calib.root and TDO_output_direc/new_calib.dat. Similarly, `python manager.py PDO PDO_output_direc/new_calib xADC_bench_data.root PDO_bench_data.root` will calibrate the channels in `xADC_bench_data.root` and `PDO_bench_data.root` then store the results in `PDO_output_direc/new_calib.root` and `PDO_output_direc/new_calib.dat`. The .dat and .root output files store the same information but in different formats.
@@ -16,7 +16,7 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 `TDO_PDO_calibration_scripts/` - This folder contains two helper scripts and three scripts which run Jonah's TDO calibration algorithm. The TDO calibration scripts are `Fit_TDO.py`, `Calibrate_TDO.py`, and `TDO_dat_to_root.py`. The first helper script is `PDOroot_to_PDOdat.py`. This script takes PDO calibration .root files to the .dat format Paulo likes. The second helper is `plot_TDO.py`. `plot_TDO.py` is a template script for plotting TDO calibrations. In its current configuration, it searches through calibration data, identifies channels with high sigma, then displays the TDO calibration the algorithm found for those channels.
 
 ## Example Usage
-1. Make Chris's calibration code: 
+1. Make Chris's calibration code:\n 
 `cd ANALYSIS`
 `make`
 2. cd to Calibration2.0 and make a directory to store new calibration data: 
