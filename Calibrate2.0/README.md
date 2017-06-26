@@ -40,7 +40,7 @@ These scripts use Chris Rogan's xADC/PDO calibration algorithm and Jonah's TDO c
 5. Definitions for the variables output by the new TDO calibration are below:  
 
 
-| Tables        | Are           | Cool  |
+| Variable        | Definition           |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-a       | $1600 |
 | col 2 is      | centered      |   $12 |
