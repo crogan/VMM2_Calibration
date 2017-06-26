@@ -45,7 +45,7 @@ Content Cell  | Content Cell
 Content Cell  | Content Cell  
 
 | Variable | Description |
-|----------|---------------------------------------------------------------------------------------|
+|:---------|:--------------------------------------------------------------------------------------|
 |MMFE8:    |last three digits of the board's IP Address                                            |
 |VMM:      |VMM index, 0-indexed                                                                   |
 |CH:       |channel index, 1-indexed                                                               |
@@ -55,14 +55,10 @@ Content Cell  | Content Cell
 |b:        |y-intercept of fitted sawtooth wave. Units: TDO counts                                 |
 |floor:    |the lower bound on TDO for this channel, AKA the TDO counts for 25/2 ns                |
 |n_samps:  |the number of data points that were fitted                                             |
-|p_8:      |the fraction of TDO on this channel which were a multiple of 8.                        |
-|          |This variable should hopefully lead to a better understanding of                       |
-|          |the mysterious VMM Lower Bit Issue.                                                    |
-|sigma:    |standard error for time prediction from this channel. Noisy channels                   |
-|          |will have high sigma.                                                                  |
-|chi2:     |sum of variance. Included to make crogan's TDO_to_time function work.                  |
-|prob:     |probability of fit given above chi2. Not meaningful since we don't know                |
-|          |the actual variance in our data.                                                       |
+|p_8:      |the fraction of TDO on this channel which were a multiple of 8.This variable should hopefully lead to a better understanding of the mysterious VMM Lower Bit Issue.|
+|sigma:    |standard error for time prediction from this channel. Noisy channels will have high sigma.|
+|chi2:     |sum of squared differences. Included to make crogan's TDO_to_time function work.                  |
+|prob:     |probability of fit given above chi2. Not meaningful since we don't know the actual variance in our data.|
 |delta_b:  |standard error on the calibration value found for b                                    |
 |delta_m:  |standard error on the calibration value found for m                                    |
 |delta_f:  |a value proportional to the standard error on the calibration value found for floor    |
