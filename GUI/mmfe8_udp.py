@@ -52,7 +52,7 @@ class udp_stuff:
         self.UDP_PORT = myUDP_PORT       
         sock = socket.socket(socket.AF_INET, # Internet
              socket.SOCK_DGRAM) # UDP 
-        sock.settimeout(5)
+        sock.settimeout(10)
         try:
             #send data
             #print >>sys.stderr, 'sending "%s"' % MESSAGE
