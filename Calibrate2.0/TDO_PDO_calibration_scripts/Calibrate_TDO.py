@@ -99,7 +99,8 @@ writer.write('MMFE8 VMM CH  ' + 'Gain'.ljust(10) + 'Pedestal'.ljust(10) + 'm'.lj
                     'delta_m'.ljust(10) + 'delta_f'.ljust(10) + '\n')        
 
 
-for i_vmm,i_channel in tqdm(locs_to_check):
+for i_vmm,i_channel in locs_to_check:
+    print i_vmm,i_channel
 
     #1) Get train_data (if there is any for this channel)
     data_without_crazy_TDO = [event for event in TDO_dict[i_vmm, i_channel] if lower_ignore < event.TDO < top_ignore]

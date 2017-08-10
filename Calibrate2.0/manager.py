@@ -28,7 +28,7 @@ parser.add_argument("input_file", help="""If "command" is TDO, then "input_file"
 
 args = parser.parse_args()
 
-assert(not 'ephem' in [fi[:5] for fi in os.listdir('.')]), """remove any files that start with 'ephem' from the current working directory (this script generates temporary files with names that start with 'ephem')  """
+#assert(not 'ephem' in [fi[:5] for fi in os.listdir('.')]), """remove any files that start with 'ephem' from the current working directory (this script generates temporary files with names that start with 'ephem')  """
 
 if args.command == 'TDO':
     assert(len(sys.argv) == 4), """Improper number of arguments for TDO calibration. To get some guidance, type "python manager.py -h" for help or "head manager.py" for examples"""
@@ -50,18 +50,22 @@ if args.command == 'PDO':
     assert(sys.argv[-1][-5:] == '.root'), """Incorrect file type for PDO calibration. Type "python manager.py -h" for help or "head manager.py" for examples"""
     assert(sys.argv[-2][-5:] == '.root'), """Incorrect file type for PDO calibration. Type "python manager.py -h" for help or "head manager.py" for examples"""
 
-    command = '../ANALYSIS/Fit_xADC ' + sys.argv[-2] + ' -o ephem_xADC_f.root'
-    subprocess.call(command, shell=True)
-    command = '../ANALYSIS/Calibrate_xADC ephem_xADC_f.root -o ephem_xADC_c.root'
-    subprocess.call(command, shell=True)
-    os.remove('ephem_xADC_f.root')
+    xADC_f_name = 'ephem_xADC_f' + sys.argv[-3].split('/')[-1] + '.root'
+    xADC_c_name = 'ephem_xADC_c' + sys.argv[-3].split('/')[-1] + '.root'
+    PDO_f_name = 'ephem_PDO_f' + sys.argv[-3].split('/')[-1] + '.root'
 
-    command = '../ANALYSIS/Fit_PDO ' + sys.argv[-1] + ' -o ephem_PDO_f.root'
+    command = '../ANALYSIS/Fit_xADC ' + sys.argv[-2] + ' -o ' + xADC_f_name
     subprocess.call(command, shell=True)
-    command = '../ANALYSIS/Calibrate_PDO ephem_PDO_f.root -x ephem_xADC_c.root -o ' + sys.argv[-3] + '.root'
+    command = '../ANALYSIS/Calibrate_xADC ' + xADC_f_name + ' -o ' + xADC_c_name
     subprocess.call(command, shell=True)
-    os.remove('ephem_xADC_c.root')
-    os.remove('ephem_PDO_f.root')
+    os.remove(xADC_f_name)
+
+    command = '../ANALYSIS/Fit_PDO ' + sys.argv[-1] + ' -o ' + PDO_f_name
+    subprocess.call(command, shell=True)
+    command = '../ANALYSIS/Calibrate_PDO ' + PDO_f_name + ' -x ' + xADC_c_name + ' -o ' + sys.argv[-3] + '.root'
+    subprocess.call(command, shell=True)
+    os.remove(xADC_c_name)
+    os.remove(PDO_f_name)
     command = 'python TDO_PDO_calibration_scripts/PDOroot_to_PDOdat.py ' + sys.argv[-3] + '.root'
     subprocess.call(command, shell=True)
 
