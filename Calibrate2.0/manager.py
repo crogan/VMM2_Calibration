@@ -55,6 +55,7 @@ if args.command == 'PDO':
     PDO_f_name = 'ephem_PDO_f' + sys.argv[-3].split('/')[-1] + '.root'
 
     command = '../ANALYSIS/Fit_xADC ' + sys.argv[-2] + ' -o ' + xADC_f_name
+    print 'this is the command', command
     subprocess.call(command, shell=True)
     command = '../ANALYSIS/Calibrate_xADC ' + xADC_f_name + ' -o ' + xADC_c_name
     subprocess.call(command, shell=True)
