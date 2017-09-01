@@ -87,18 +87,18 @@ for ip in ips_to_look_for:
         recent_xadc[ip] = [so[:2] for so in list(reversed(sorted(ip_to_xadc[ip], key=lambda x: x[2])))][0][0]
 
 
-for enum,ip in enumerate(recent_xadc):
-    command = 'python manager.py TDO ' + folder_name + '/board' + str(ip) + '_TDO_calib ' + recent_tdo[ip]
-    make_script(command, 2*enum)
-    subprocess.Popen('sbatch 3522_' + str(2*enum) + '.sh', shell=True)
-    # sleep for a second to be polite to the sbatch scheduler
-    sleep(1)
+# for enum,ip in enumerate(recent_xadc):
+#     command = 'python manager.py TDO ' + folder_name + '/board' + str(ip) + '_TDO_calib ' + recent_tdo[ip]
+#     make_script(command, 2*enum)
+#     subprocess.Popen('sbatch 3522_' + str(2*enum) + '.sh', shell=True)
+#     # sleep for a second to be polite to the sbatch scheduler
+#     sleep(1)
 
-    command = 'python manager.py PDO ' + folder_name + '/board' + str(ip) + '_PDO_calib ' + recent_xadc[ip] + ' ' + recent_pdo[ip]
-    make_script(command, 2*enum+1)
-    subprocess.Popen('sbatch 3522_' + str(2*enum+1) + '.sh', shell=True)
-    # sleep for a second to be polite to the sbatch scheduler
-    sleep(1)
+#     command = 'python manager.py PDO ' + folder_name + '/board' + str(ip) + '_PDO_calib ' + recent_xadc[ip] + ' ' + recent_pdo[ip]
+#     make_script(command, 2*enum+1)
+#     subprocess.Popen('sbatch 3522_' + str(2*enum+1) + '.sh', shell=True)
+#     # sleep for a second to be polite to the sbatch scheduler
+#     sleep(1)
 
 
 
